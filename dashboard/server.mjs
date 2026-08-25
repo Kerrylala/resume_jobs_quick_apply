@@ -5822,9 +5822,12 @@ async function handleBuildPackagePreview(req, res, jobId) {
       approval_safety_error: eligibility.error,
       recommended_decision: job.recommended_decision,
       application_mode: job.application_mode,
-      submit_allowed: job.submit_allowed === false ? false : null,
-      upload_resume_allowed: job.upload_resume_allowed === false ? false : null,
-      final_submit_allowed: job.final_submit_allowed === false ? false : null,
+      // A BLOCKED package authorizes nothing, so every safety flag reports
+      // false. Echoing null for "the record does not say" read as permissive
+      // in a payload whose whole purpose is to report safety.
+      submit_allowed: false,
+      upload_resume_allowed: false,
+      final_submit_allowed: false,
       safety: {
         browser_opened: false,
         chrome_extension_called: false,

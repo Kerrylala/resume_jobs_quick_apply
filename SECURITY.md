@@ -58,9 +58,10 @@ field values or resume bytes. Native Messaging is not part of the product; no
 native host or registry installation is required.
 
 The Extension does not fill from a cached Session after a missing or failed
-handoff. When the Dashboard reset epoch changes, the next popup connection
-clears cached Session, report, question, mapping, and legacy private state before
-requesting a new handoff.
+handoff. It keeps no persistent state at all — it uses no `chrome.storage`, so
+there is no cached Session, report, question, or mapping to go stale or to
+clear. Every fill needs a fresh handoff from the Dashboard, and deleting local
+Dashboard data leaves nothing behind inside the browser.
 
 The extension does not expose private profiles as web-accessible resources.
 
@@ -68,9 +69,9 @@ Its content script runs on public https pages so that company-hosted careers
 domains are supported, not only the large ATS vendors — but it stays silent
 until a fill session exists. Before any page information leaves the tab, the
 extension asks the local app which hosts belong to an ACTIVE fill session; that
-question carries no page data at all, and its answer is cached. A page URL is
-sent to the local app only when its host is on that list, so ordinary browsing
-is never transmitted, logged, or stored anywhere.
+question carries no page data at all, and its answer is cached. A page's URL
+leaves the tab only when its host is on that list, and then only to
+`127.0.0.1`. Browsing on every other host never leaves the tab at all.
 
 Normal executor runs never transport or attach resume bytes. Resume attachment
 is a separate manual action with product-owned confirmation; it is never part
