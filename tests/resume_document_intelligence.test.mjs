@@ -62,7 +62,7 @@ Community Service | organized events`);
 
 test('US-layout experience groups company, role, dates, location, and bullets into ONE entry', () => {
   const suggestions = buildResumeFactSuggestions(`Synthetic Person
-synthetic@example.com · (619) 000-0000
+synthetic@example.com · (555) 010-0000
 Experience
 ABAmerica Jan 2026 - now
 Marketing San Diego, CA
