@@ -9,8 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-0f766e.svg)](LICENSE)
 [![Safety: human submit](https://img.shields.io/badge/final_submit-human_only-f59e0b)](SECURITY.md)
 
-<!-- Product tour GIF and screenshots are pending privacy review and are not
-included in this clean workspace yet. See PUBLIC_SOURCE_MANIFEST.md. -->
+**English** · [简体中文](README.zh-CN.md)
+
+![Job matches with explainable scores](docs/images/jobs.png)
 
 Resume Jobs helps one person build a versioned **Career Brain**, search China
 and global opportunities, understand deterministic and semantic match quality,
@@ -57,8 +58,21 @@ over.
 
 ## Product preview
 
-Product screenshots are pending privacy review and are not included yet. To
-see the product, run the offline demo: `npm run demo`.
+Every screenshot below uses a synthetic candidate and fictional employers.
+
+| Your profile is the single source of truth | Every match explains itself |
+|---|---|
+| ![My Profile](docs/images/profile.png) | ![Job detail with provenance](docs/images/job-detail.png) |
+
+**Target roles**, education, experience, projects, and skills are versioned and
+editable, and they drive matching, the tailored resume summary, and search. Each
+job keeps the evidence of where it came from — source, query, discovery time,
+and original link — so a recommendation is never a context-free number. In the
+list above, the senior role scoring 41 is filtered out of **Recommended** for an
+early-career profile instead of being quietly dropped.
+
+AI is optional: [Settings](docs/images/settings.png) lets you point the product
+at a local model or your own API key, and the product works fully without one.
 
 ## Quick start
 
@@ -132,15 +146,22 @@ upload a resume, or submit an application.
 ## Browser extension
 
 Load `extensions/application_assistant` as an unpacked Manifest V3 extension.
-Private profiles are not web-accessible resources. Automatic activation is
-limited to localhost, Greenhouse, Lever, Ashby, and legacy Workday hosts; other
-public pages use Chrome's one-tab `activeTab` permission after the user opens
-the popup.
+It runs on public application pages — including company-hosted careers domains,
+not just the big ATS vendors — and stays dormant until you start a fill.
+
+**A page's URL reaches the local app only when its host belongs to an active
+fill session.** The extension asks the app which hosts are active (a request
+that carries no page information at all) and stays silent everywhere else, so
+ordinary browsing is never reported anywhere.
 
 After **Start AI Fill Assistant**, the popup receives the reviewed application
-setup only when the open page matches the selected job. It receives no resume
+setup only when the open page belongs to the selected job. It receives no resume
 file bytes or final-submit permission. Resume attachment remains a separate,
 explicitly confirmed manual action.
+
+On the page itself, the Assistant shows a small chip with the live application
+state plus two buttons: **Fill this step** and **Re-scan now**, for the moments
+you do not want to wait for the automatic cycle.
 
 Use **Settings → Extension Connection** to verify the installed extension,
 connection, current page, and matched application. Technical transport details
@@ -158,6 +179,11 @@ Choose the executor while reviewing an approved Application Package:
   a dedicated ignored profile. It takes before/after screenshots, writes a
   redacted execution report, fills the same safe fields, and pauses with the
   browser open for review.
+
+Multi-step applications are supported in both modes: when a portal walks you
+through several pages, each new step is detected, allowed to settle, and filled
+once with your confirmed answers. Navigation stays yours — the product never
+clicks **Next**, **Save & Continue**, or **Submit**.
 
 The modes are not separate products. Both consume the same reviewed Application
 Package, follow the same safety rules, and return the same redacted result. See the
@@ -234,6 +260,9 @@ contracts and never writes values, uploads a resume, logs in, or submits.
 
 ## Documentation
 
+- [简体中文说明](README.zh-CN.md) · [中文贡献指南](CONTRIBUTING.zh-CN.md) ·
+  [中文安全与隐私](SECURITY.zh-CN.md) · [中文更新日志](CHANGELOG.zh-CN.md)
+- [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 - [Documentation index](docs/INDEX.md)
 - [Quick start](docs/user/quick_start.md)
 - [中文用户指南](docs/user/USER_GUIDE_CN.md)

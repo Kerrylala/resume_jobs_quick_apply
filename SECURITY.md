@@ -63,9 +63,14 @@ clears cached Session, report, question, mapping, and legacy private state befor
 requesting a new handoff.
 
 The extension does not expose private profiles as web-accessible resources.
-Permanent host access is limited to localhost, Greenhouse, Lever, Ashby, and
-legacy Workday hosts; another public page requires an explicit `activeTab`
-action.
+
+Its content script runs on public https pages so that company-hosted careers
+domains are supported, not only the large ATS vendors — but it stays silent
+until a fill session exists. Before any page information leaves the tab, the
+extension asks the local app which hosts belong to an ACTIVE fill session; that
+question carries no page data at all, and its answer is cached. A page URL is
+sent to the local app only when its host is on that list, so ordinary browsing
+is never transmitted, logged, or stored anywhere.
 
 Normal executor runs never transport or attach resume bytes. Resume attachment
 is a separate manual action with product-owned confirmation; it is never part

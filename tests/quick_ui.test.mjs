@@ -101,3 +101,34 @@ test('AI provider form speaks the server field vocabulary', () => {
   }
   assert.ok(!js.includes("'lmstudio'"), 'no fake provider type values in the UI');
 });
+
+test('conditional sections never print the word "null" into the page', () => {
+  // The raw DOM append() renders a null child as the literal text "null".
+  // A job with no search-match explanation printed "null" in its drawer.
+  // Every call site that passes a conditional child into an EXISTING node
+  // must go through mount(), which skips nullish children like el() does.
+  assert.ok(/function mount\(parent, \.\.\.children\)/.test(js), 'mount() helper must exist');
+  assert.ok(/if \(child == null\) continue;[\s\S]{0,200}parent\.append/.test(js),
+    'mount() must skip nullish children');
+
+  const risky = [];
+  const pattern = /(\w+)\.append\(/g;
+  let match;
+  while ((match = pattern.exec(js)) !== null) {
+    // Read the whole call by paren balance, then flag a bare `: null` that is
+    // a DIRECT argument (depth 1) rather than one el() already filters.
+    let depth = 0;
+    let index = match.index + match[0].length - 1;
+    let directArgs = '';
+    for (; index < js.length; index += 1) {
+      const character = js[index];
+      if (character === '(') depth += 1;
+      else if (character === ')') { depth -= 1; if (depth === 0) break; }
+      if (depth === 1 && character !== '(') directArgs += character;
+    }
+    if (/:\s*null\s*(,|$)/m.test(directArgs)) {
+      risky.push(js.slice(0, match.index).split('\n').length);
+    }
+  }
+  assert.deepEqual(risky, [], `raw append() with a null argument at line(s): ${risky.join(', ')}`);
+});

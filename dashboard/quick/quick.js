@@ -104,6 +104,16 @@
     }
     return node;
   }
+  // Append into an EXISTING node with el()'s null handling. The raw DOM
+  // append() turns a null child into the literal text "null" — a conditional
+  // section that was simply absent printed "null" on the page.
+  function mount(parent, ...children) {
+    for (const child of children.flat()) {
+      if (child == null) continue;
+      parent.append(child.nodeType ? child : document.createTextNode(String(child)));
+    }
+    return parent;
+  }
   const uiState = {
     get(key, fallback) {
       try { return JSON.parse(sessionStorage.getItem(`qa_${key}`)) ?? fallback; } catch { return fallback; }
@@ -933,7 +943,7 @@
           el('button', { class: 'btn small', onclick: () => generateTailoredResume(job, body) }, t('pf.resume.make')),
           el('button', { class: 'btn small', onclick: () => generateCoverLetter(job, body) }, t('pf.letter.make'))),
         el('div', { class: 'small muted', id: 'jobToolsOut', style: 'margin-top:8px' }));
-      body.append(
+      mount(body,
         el('div', { class: 'drawer-section' },
           el('div', { class: 'kv' },
             el('dt', {}, t('jobs.title')), el('dd', {}, job.title || '—'),

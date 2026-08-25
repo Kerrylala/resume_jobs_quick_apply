@@ -1,5 +1,7 @@
 # Contributing
 
+**English** · [简体中文](CONTRIBUTING.zh-CN.md)
+
 Thanks for taking a look. This is a local-first product: it runs entirely on
 the user's machine and holds their real job-search data, so contributions are
 judged first on whether they keep that promise.
