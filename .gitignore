@@ -1,0 +1,67 @@
+node_modules/
+.venv_scrapling/
+.env
+.env.*
+!.env.example
+
+# Local runtime state and generated output
+data/*.json
+data/*.json.*
+# Nested runtime stores (tailored resume drafts, generated indexes). data/*.json
+# only matches direct children, so a subdirectory would otherwise be tracked.
+data/*/
+logs/
+browser_profiles/
+browser_sessions/
+archive/
+reports/*
+!reports/.gitkeep
+output/
+tmp/
+applications/
+dist/*.lnk
+overnight_state.json
+
+# Local resumes and user-owned documents
+documents/
+profile.local.json
+extensions/application_assistant/profile.local.json
+extensions/application_assistant/package_bundle.local.js
+extensions/application_assistant/site_rules.local.json
+extensions/application_assistant/field_memory.local.json
+
+# Local caches and environments
+.openclaw/
+goal_mode/
+__pycache__/
+*.pyc
+*.pdf
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Auto-generated agent workspace templates (not product documentation)
+/HEARTBEAT.md
+/IDENTITY.md
+/SOUL.md
+/TOOLS.md
+/USER.md
+
+# Private real-page QA evidence (keep locally; never publish)
+screenshots/real_page_challenge_policy/
+browser_runtime/
+
+# Internal working notes and machine-migration records (kept locally; they
+# name private absolute paths and development history that is not product
+# documentation)
+/BACKEND_ACCEPTANCE_FINAL_REPORT.md
+/BACKEND_COMPLETION_REPORT.md
+/BACKEND_TRUST_ACCEPTANCE_REPORT.md
+/BACKEND_TRUST_BASELINE.md
+/BACKEND_TRUST_IMPLEMENTATION_PLAN.md
+/CLEAN_WORKSPACE_REPORT.md
+/CLEAN_WORKSPACE_REPORT_CN.md
+/FILE_REORGANIZATION_MANIFEST.json
+/PUBLIC_SOURCE_MANIFEST.md
+docs/history/
+docs/goal_modes/

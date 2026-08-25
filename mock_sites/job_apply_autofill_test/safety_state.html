@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock ATS Safety State</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 18px; color: #172033; }
+    main { border: 1px solid #d7dee8; border-radius: 12px; padding: 20px; }
+    label { display: grid; gap: 6px; margin: 14px 0; font-weight: 650; }
+    input { padding: 9px; border: 1px solid #cbd5e1; border-radius: 8px; }
+    button { padding: 10px 14px; border: 0; border-radius: 8px; background: #2563eb; color: white; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main id="state-root" aria-live="polite"></main>
+  <script>
+    const state = new URLSearchParams(location.search).get('state') || 'login';
+    const views = {
+      login: {
+        title: 'Sign in to continue',
+        field: '<label>Password <input type="password" name="password" autocomplete="current-password"></label>',
+        button: 'Sign in'
+      },
+      captcha: {
+        title: 'Human verification CAPTCHA',
+        field: '<label>CAPTCHA answer <input name="captcha_answer" autocomplete="off"></label>',
+        button: 'Verify human'
+      },
+      mfa: {
+        title: 'Multi-factor authentication',
+        field: '<label>One-time verification code <input name="otp_code" inputmode="numeric"></label>',
+        button: 'Verify code'
+      }
+    };
+    const view = views[state] || views.login;
+    document.title = `${view.title} - Mock ATS`;
+    document.getElementById('state-root').innerHTML = `
+      <h1>${view.title}</h1>
+      <p>This localhost-only fixture must pause autofill and require user action.</p>
+      <form action="#" method="post">
+        ${view.field}
+        <button type="submit">${view.button}</button>
+      </form>
+    `;
+  </script>
+</body>
+</html>

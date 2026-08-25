@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complex Job Application Autofill Test</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 920px; margin: 32px auto; padding: 0 18px; color: #172033; }
+    form { display: grid; gap: 18px; }
+    section { border: 1px solid #d7dee8; border-radius: 12px; padding: 16px; }
+    label, .field-block { display: grid; gap: 5px; margin: 10px 0; font-weight: 650; }
+    input, textarea, select { padding: 9px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+    textarea { min-height: 90px; }
+    button { margin-right: 8px; padding: 10px 14px; border: 0; border-radius: 8px; background: #2563eb; color: white; font-weight: 700; }
+    button.secondary { background: #64748b; }
+    .hint { color: #64748b; font-size: 13px; }
+    .step[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Complex Job Application Autofill Test</h1>
+  <p class="hint">This page intentionally mixes normal, unusual, and risky fields. There is no JavaScript auto-submit behavior.</p>
+
+  <form action="#" method="post">
+    <section>
+      <h2>中文标签 / Chinese Labels</h2>
+      <label>真实姓名 <input name="candidate_full_name" required></label>
+      <label>邮箱 <input type="email" name="contact_mail" required></label>
+      <label>手机 <input type="tel" name="candidate_mobile"></label>
+      <label>所在城市 <input name="geo_city"></label>
+      <label>国家 / 地区 <input name="region_country"></label>
+      <label>毕业院校 <input name="edu_org"></label>
+      <label>专业 <input name="study_track"></label>
+      <label>毕业年份 <input name="grad_time"></label>
+      <label>工作许可
+        <select name="visa_status_cn" required>
+          <option value="">请选择</option>
+          <option>不需要赞助</option>
+          <option>需要公司赞助</option>
+          <option>不确定，需要人工确认</option>
+        </select>
+      </label>
+    </section>
+
+    <section>
+      <h2>Unusual Names and Placeholder-only Fields</h2>
+      <label>Callback route <input name="tel_contact_unmapped"></label>
+      <input name="x_001" placeholder="LinkedIn Profile">
+      <input name="x_002" placeholder="GitHub URL">
+      <input name="x_003" placeholder="personal website">
+      <input name="role_target_free_text" placeholder="target role" required>
+      <input name="exp_num" placeholder="years of experience">
+      <textarea name="candidate_pitch" placeholder="summary"></textarea>
+    </section>
+
+    <section>
+      <h2>Aria-label and Nearby Text</h2>
+      <input aria-label="First Name" name="mystery_given">
+      <input aria-label="Last Name" name="mystery_family">
+      <div class="field-block">
+        <span>Degree earned by applicant</span>
+        <input name="credential_level">
+      </div>
+      <div class="field-block">
+        <span>City where you currently live</span>
+        <input name="current_base_unknown_label">
+      </div>
+      <label>Preferred Product Area
+        <select name="desired_role_select">
+          <option value="">Select one</option>
+          <option>AI Product Manager</option>
+          <option>Data Product Manager</option>
+          <option>Growth Product Manager</option>
+        </select>
+      </label>
+      <fieldset>
+        <legend>Workplace preference (single choice)</legend>
+        <label><input type="radio" name="workplace_preference" value="remote"> Remote</label>
+        <label><input type="radio" name="workplace_preference" value="hybrid"> Hybrid</label>
+      </fieldset>
+      <fieldset>
+        <legend>Optional acknowledgements (multiple choice)</legend>
+        <label><input type="checkbox" name="privacy_ack"> Privacy acknowledgement</label>
+        <label><input type="checkbox" name="future_roles"> Consider for future roles</label>
+      </fieldset>
+    </section>
+
+    <section id="multi-step">
+      <h2>Multi-step and dynamic questions</h2>
+      <div class="step" data-step="1">
+        <label>Current focus <input name="current_focus" placeholder="Current focus"></label>
+        <button type="button" id="show-next-step">Continue to next mock step</button>
+      </div>
+      <div class="step" data-step="2" hidden>
+        <label>Why are you interested in this role?
+          <textarea name="dynamic_unknown_question" data-dynamic-question="true"></textarea>
+        </label>
+        <label>Expected salary (sensitive)
+          <input name="dynamic_salary_expectation" data-sensitive-question="true">
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fields that should be skipped</h2>
+      <label>Disabled Email <input name="disabled_email" placeholder="email" disabled></label>
+      <input type="hidden" name="hidden_tracking_field" value="do-not-touch">
+      <label>Password <input type="password" name="account_password" placeholder="password"></label>
+      <label>Resume File <input type="file" name="resume_upload"></label>
+      <label>Captcha <input name="captcha_answer" placeholder="captcha"></label>
+      <label>验证码 <input name="sms_verification_code" placeholder="验证码"></label>
+      <label>OTP Code <input name="otp_code" placeholder="OTP"></label>
+      <label>Passport Number <input name="passport_number" placeholder="passport"></label>
+    </section>
+
+    <section>
+      <h2>Submit / Apply Controls for Detection Only</h2>
+      <button type="submit">Submit application</button>
+      <button type="button">Apply Now</button>
+      <input type="submit" value="Confirm and Send">
+      <button class="secondary" type="reset">Reset form</button>
+    </section>
+  </form>
+  <script>
+    document.getElementById('show-next-step').addEventListener('click', () => {
+      document.querySelector('[data-step="2"]').hidden = false;
+    });
+    document.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      document.body.dataset.submitAttempted = 'true';
+    });
+  </script>
+</body>
+</html>

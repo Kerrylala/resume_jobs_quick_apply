@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Jobs Mock ATS</title>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 820px; margin: 32px auto; padding: 0 18px; color: #1f2937; }
+    h1 { margin-bottom: 6px; }
+    p { color: #526070; }
+    form { display: grid; gap: 14px; }
+    label { display: grid; gap: 5px; font-weight: 650; }
+    input, textarea, select { padding: 9px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+    textarea { min-height: 96px; }
+    button { padding: 10px 14px; border: 0; border-radius: 8px; background: #2563eb; color: white; font-weight: 700; width: fit-content; }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    .note { padding: 10px 12px; background: #f8fafc; border-left: 4px solid #2563eb; }
+    .success { padding: 10px 12px; background: #ecfdf5; border-left: 4px solid #059669; color: #065f46; }
+    .warning { padding: 10px 12px; background: #fff7ed; border-left: 4px solid #ea580c; color: #9a3412; }
+    .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 18px 0; }
+    .secondary { background: #475569; }
+  </style>
+</head>
+<body>
+  <h1>Resume Jobs Mock ATS</h1>
+  <p class="note">This page runs only on localhost. Safe Mock Fill uses the reviewed local Application Package, skips resume upload and sensitive answers, and never clicks Final Submit.</p>
+  <div class="actions">
+    <button id="runMockFillBtn" type="button">Run Safe Mock Fill</button>
+    <button id="returnDashboardBtn" type="button" class="secondary">Return to Dashboard</button>
+  </div>
+  <p id="mockFillStatus" class="warning" role="status" aria-live="polite">Waiting for a Resume Jobs Application Run.</p>
+
+  <form id="mockApplicationForm" action="#" method="post">
+    <label>Full Name <input name="full_name" autocomplete="name" placeholder="Full Name"></label>
+    <label>First Name <input name="first_name" autocomplete="given-name" placeholder="First Name"></label>
+    <label>Last Name <input name="last_name" autocomplete="family-name" placeholder="Last Name"></label>
+    <label>Email <input type="email" name="email" autocomplete="email" placeholder="Email"></label>
+    <label>Phone <input type="tel" name="phone" autocomplete="tel" placeholder="Phone"></label>
+    <label>City <input name="city" autocomplete="address-level2" placeholder="City"></label>
+    <label>Country <input name="country" autocomplete="country-name" placeholder="Country"></label>
+    <label>LinkedIn <input name="linkedin" placeholder="LinkedIn URL"></label>
+    <label>GitHub <input name="github" placeholder="GitHub URL"></label>
+    <label>Portfolio <input name="portfolio" placeholder="Personal website or portfolio"></label>
+    <label>School <input name="school" placeholder="School or university"></label>
+    <label>Degree <input name="degree" placeholder="Degree"></label>
+    <label>Major <input name="major" placeholder="Major / field of study"></label>
+    <label>Graduation Year <input name="graduation_year" placeholder="Graduation Year"></label>
+    <label>Work Authorization
+      <select name="work_authorization">
+        <option value="">Choose one</option>
+        <option>Authorized</option>
+        <option>Need sponsorship</option>
+        <option>Requires review before answering on real applications</option>
+      </select>
+    </label>
+    <label>Desired Role <input name="desired_role" placeholder="Desired Role"></label>
+    <label>Years of Experience <input name="years_experience" placeholder="Years of Experience"></label>
+    <label>Summary <textarea name="summary" placeholder="Short professional summary"></textarea></label>
+    <label>Resume Upload <input type="file" name="resume_file"></label>
+    <button type="submit">Final Submit</button>
+  </form>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const jobId = params.get('job_id') || '';
+    const applicationSessionId = params.get('application_session_id') || '';
+    const statusEl = document.getElementById('mockFillStatus');
+    const runButton = document.getElementById('runMockFillBtn');
+    const form = document.getElementById('mockApplicationForm');
+
+    function showStatus(kind, message) {
+      statusEl.className = kind;
+      statusEl.textContent = message;
+    }
+
+    function fillKnownFields(profile) {
+      let filled = 0;
+      for (const [key, value] of Object.entries(profile || {})) {
+        if (!value || ['work_authorization', 'resume_file'].includes(key)) continue;
+        const field = form.elements.namedItem(key);
+        if (!field || field.type === 'file') continue;
+        field.value = String(value);
+        filled += 1;
+      }
+      return filled;
+    }
+
+    async function runSafeMockFill() {
+      if (!jobId || !applicationRunId) {
+        showStatus('warning', 'Start this Mock ATS from Applications → Start AI Fill Assistant so the reviewed package can be matched safely.');
+        return;
+      }
+      runButton.disabled = true;
+      showStatus('warning', 'Loading the reviewed Application Package…');
+      try {
+        const packageResponse = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/application-package`);
+        const packageValue = await packageResponse.json();
+        if (!packageResponse.ok || packageValue.mock_fill?.eligible !== true) {
+          throw new Error(packageValue.message || 'This package is not eligible for localhost Mock Fill.');
+        }
+        const filled = fillKnownFields(packageValue.mock_fill.profile);
+        const fields = [...form.elements].filter(field => field.name);
+        const report = {
+          application_session_id: applicationSessionId,
+          timestamp: new Date().toISOString(),
+          total_fields_seen: fields.length,
+          filled_fields_count: filled,
+          skipped_fields_count: Math.max(0, fields.length - filled - 1),
+          hard_blocked_fields_count: 1,
+          fields_requiring_user_review_count: 0,
+          suggested_questions_count: 0,
+          blocked_page_state: false,
+          blocked_reason: '',
+          resume_upload_attempted: false,
+          final_submit_clicked: false,
+          application_submitted: false
+        };
+        const reportResponse = await fetch(`/api/jobs/${encodeURIComponent(jobId)}/fill-report`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(report)
+        });
+        const reportValue = await reportResponse.json();
+        if (!reportResponse.ok) throw new Error(reportValue.message || 'Mock Fill report could not be recorded.');
+        showStatus(
+          'success',
+          `✓ Safe Mock Fill complete: ${filled} known field(s) filled. Resume upload was skipped. Review the form; Final Submit remains yours.`
+        );
+      } catch (error) {
+        runButton.disabled = false;
+        showStatus('warning', `Mock Fill stopped: ${error.message}`);
+      }
+    }
+
+    runButton.addEventListener('click', runSafeMockFill);
+    document.getElementById('returnDashboardBtn').addEventListener('click', () => {
+      window.location.assign('/');
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      showStatus('warning', 'Final Submit is disabled in the localhost demo. Resume Jobs never submits automatically.');
+    });
+    if (jobId && applicationRunId) {
+      showStatus('warning', 'Application Run matched. Click “Run Safe Mock Fill” to fill reviewed, non-sensitive fields.');
+    } else {
+      runButton.disabled = true;
+    }
+  </script>
+</body>
+</html>

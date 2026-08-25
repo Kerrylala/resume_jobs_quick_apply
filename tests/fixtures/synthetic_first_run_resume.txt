@@ -1,0 +1,11 @@
+Synthetic Candidate
+candidate@local.invalid
+Skills: JavaScript, analytics, roadmapping
+
+Experience
+- Product analyst at Synthetic Company
+
+Projects
+- Resume Jobs local demo
+
+Languages: English, Chinese

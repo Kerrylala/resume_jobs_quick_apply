@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tells the browser extension this is the app itself, never a form to fill. -->
+  <meta name="resume-jobs-app" content="advanced">
+  <title>Resume Jobs AI Agent</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">RJ</div>
+        <div>
+          <h1>Resume Jobs AI</h1>
+          <p class="subtitle">Your job application agent — you stay in control.</p>
+        </div>
+      </div>
+      <nav class="top-actions" aria-label="Product navigation">
+        <button id="homeTabBtn" class="btn-tab active" type="button">Home</button>
+        <button id="jobSearchTabBtn" class="btn-tab" type="button">Job Discovery</button>
+        <button id="jobMatchesTabBtn" class="btn-tab" type="button">Job Matches</button>
+        <button id="applicationsTabBtn" class="btn-tab" type="button">Applications</button>
+        <button id="interviewPrepTabBtn" class="btn-tab" type="button">Interview Preparation</button>
+        <button id="settingsTabBtn" class="btn-tab" type="button">AI Settings</button>
+        <button id="refreshBtn" class="btn-secondary btn-refresh" type="button">Refresh</button>
+      </nav>
+    </header>
+
+    <section class="workflow-shell" aria-label="Application workflow">
+      <div class="workflow-summary">
+        <div>
+          <p class="eyebrow">YOUR PROGRESS</p>
+          <h2 id="workflowCurrentLabel">Step 1 · Upload your resume</h2>
+          <p id="workflowNextLabel">Add one PDF, DOCX, or UTF-8 TXT file to start.</p>
+        </div>
+        <button id="globalNextStepBtn" class="btn-primary" type="button">Upload resume</button>
+      </div>
+      <ol id="workflowProgress" class="workflow-steps">
+        <li data-workflow-step="1"><span>1</span>Upload Resume</li>
+        <li data-workflow-step="2"><span>2</span>Review Profile</li>
+        <li data-workflow-step="3"><span>3</span>Create Search</li>
+        <li data-workflow-step="4"><span>4</span>Find Jobs</li>
+        <li data-workflow-step="5"><span>5</span>Review Scores</li>
+        <li data-workflow-step="6"><span>6</span>Approve Jobs</li>
+        <li data-workflow-step="7"><span>7</span>Build Package</li>
+        <li data-workflow-step="8"><span>8</span>AI Fill Assistant</li>
+        <li data-workflow-step="9"><span>9</span>Review</li>
+        <li data-workflow-step="10"><span>10</span>Submit Yourself</li>
+      </ol>
+    </section>
+
+    <aside class="safety-banner">
+      <strong>You make the final decision.</strong>
+      Resume Jobs pauses for login, CAPTCHA, MFA, file upload, unknown or sensitive questions, and final Submit.
+    </aside>
+    <section id="runStatus" class="run-status hidden" role="status" aria-live="polite"></section>
+
+    <main id="jobsView">
+      <div data-product-view="career-brain">
+        <section class="page-intro">
+          <div>
+            <p class="eyebrow">TODAY</p>
+            <h2>What should I do today?</h2>
+            <p>See new recommendations, pending applications, interview preparation, profile improvements, and the single best action to take next.</p>
+          </div>
+          <button class="help-button" type="button" data-help-toggle="homeHelp">What is this?</button>
+        </section>
+        <div id="homeHelp" class="help-panel hidden">
+          The Dashboard shows your current step and the one action that moves you forward. It never submits an application for you.
+        </div>
+
+        <section class="onboarding-card" aria-labelledby="onboardingTitle">
+          <div class="onboarding-copy">
+            <p class="eyebrow">NEXT STEP</p>
+            <h2 id="onboardingTitle">Upload your resume once</h2>
+            <p id="onboardingDescription">Resume Jobs uses one reviewed local resume to prepare future applications with less repeated typing.</p>
+            <div class="onboarding-actions">
+              <button id="startSetupBtn" class="btn-primary" type="button">Continue setup</button>
+              <button id="onboardingSearchBtn" class="btn-secondary" type="button">See the full workflow</button>
+            </div>
+          </div>
+          <div class="readiness-panel">
+            <div class="readiness-score">
+              <span id="readinessPercent">—</span>
+              <small>setup complete</small>
+            </div>
+            <ul id="readinessChecklist" class="readiness-checklist">
+              <li>Checking your local setup…</li>
+            </ul>
+            <div id="readinessNextStep" class="readiness-next-step">Loading next step…</div>
+          </div>
+        </section>
+
+        <section class="home-daily-grid" aria-label="Daily career dashboard">
+          <article class="home-daily-card home-career-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">CAREER BRAIN</p><h3>Your reusable career profile</h3></div>
+              <span id="homeCareerBrainBadge" class="provider-state">CHECKING</span>
+            </div>
+            <div id="homeCareerBrainSummary" class="home-card-body"><p class="loading">Checking profile status…</p></div>
+            <button id="homeCareerBrainAction" class="btn-secondary" type="button">Review Career Brain</button>
+          </article>
+          <article class="home-daily-card home-recommended-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">NEW RECOMMENDED JOBS</p><h3>Best new opportunities to review</h3></div>
+              <span id="homeRecommendedCount" class="home-count">0</span>
+            </div>
+            <div id="homeRecommendedJobs" class="home-card-body"><p class="loading">Loading recommendations…</p></div>
+            <button class="btn-secondary" type="button" onclick="switchView('job-matches')">Review all matches</button>
+          </article>
+          <article class="home-daily-card home-applications-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">APPLICATIONS</p><h3>Work already in progress</h3></div>
+              <span id="homeApplicationsCount" class="home-count">0</span>
+            </div>
+            <div id="homeApplicationsSummary" class="home-card-body"><p class="loading">Loading applications…</p></div>
+            <button class="btn-secondary" type="button" onclick="switchView('applications')">Open applications</button>
+          </article>
+          <article class="home-daily-card home-next-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">NEXT ACTIONS</p><h3>Keep momentum without guessing</h3></div>
+            </div>
+            <div id="homeNextActions" class="home-card-body"><p class="loading">Calculating your next action…</p></div>
+            <button id="homeNextActionBtn" class="btn-primary" type="button">Continue</button>
+          </article>
+          <article class="home-daily-card home-interview-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">INTERVIEW PREPARATION</p><h3>Evidence worth rehearsing</h3></div>
+              <span id="homeInterviewCount" class="home-count">0</span>
+            </div>
+            <div id="homeInterviewSummary" class="home-card-body"><p class="loading">Checking interview preparation…</p></div>
+            <button class="btn-secondary" type="button" onclick="switchView('interview-preparation')">Prepare for interviews</button>
+          </article>
+          <article class="home-daily-card home-profile-improvement-card">
+            <div class="section-heading">
+              <div><p class="eyebrow">PROFILE IMPROVEMENTS</p><h3>Make future matches stronger</h3></div>
+              <span id="homeProfileImprovementCount" class="home-count">0</span>
+            </div>
+            <div id="homeProfileImprovements" class="home-card-body"><p class="loading">Checking profile coverage…</p></div>
+            <button class="btn-secondary" type="button" onclick="reviewCareerBrainFromHome()">Improve Career Brain</button>
+          </article>
+        </section>
+
+        <details class="advanced-disclosure">
+          <summary>Activity and completion details</summary>
+          <section class="stats-cards">
+            <div class="card"><div class="card-title">Job Leads</div><div class="card-value" id="jobLeadsCount">—</div></div>
+            <div class="card"><div class="card-title">Shortlisted</div><div class="card-value" id="shortlistCount">—</div></div>
+            <div class="card"><div class="card-title">Pending</div><div class="card-value" id="pendingCount">—</div></div>
+            <div class="card"><div class="card-title">Approved</div><div class="card-value" id="approvedCount">—</div></div>
+            <div class="card"><div class="card-title">Rejected</div><div class="card-value" id="rejectedCount">—</div></div>
+            <div class="card"><div class="card-title">Manual Review</div><div class="card-value" id="reviewCount">—</div></div>
+            <div class="card north-star-card">
+              <div class="card-title">Application Completion</div>
+              <div class="card-value" id="completionRate">—</div>
+              <div class="card-note" id="completionMeasured">No approved applications measured</div>
+            </div>
+            <div class="card">
+              <div class="card-title">Fields Needing You</div>
+              <div class="card-value" id="completionReviewCount">—</div>
+              <div class="card-note">New, sensitive, or high-risk fields</div>
+            </div>
+          </section>
+          <section class="completion-insights" aria-labelledby="completionInsightsTitle">
+            <div>
+              <p class="eyebrow">COMPLETION FEEDBACK</p>
+              <h3 id="completionInsightsTitle">Make the next application faster</h3>
+              <p id="completionNextAction">Build an Application Package to see what to confirm next.</p>
+            </div>
+            <div>
+              <h3>Repeated blockers</h3>
+              <ul id="completionBlockersList"><li>No completion records yet.</li></ul>
+            </div>
+          </section>
+        </details>
+      </div>
+
+      <div data-product-view="job-discovery" class="hidden">
+        <section class="page-intro">
+          <div>
+            <p class="eyebrow">STEP 3–4</p>
+            <h2>Create your job search</h2>
+            <p>Tell Resume Jobs what a good opportunity looks like. Save once, then find and score matching jobs.</p>
+          </div>
+          <button class="help-button" type="button" data-help-toggle="searchHelp">What is this?</button>
+        </section>
+        <div id="searchHelp" class="help-panel hidden">
+          This page defines what jobs Resume Jobs will search for. Start with one role and one location; Advanced options are optional.
+        </div>
+        <section class="source-catalog-panel" aria-labelledby="sourceCatalogTitle">
+          <div class="section-heading">
+            <div><p class="eyebrow">SOURCE COVERAGE</p><h3 id="sourceCatalogTitle">China and global discovery paths</h3></div>
+          </div>
+          <div id="sourceCatalogContainer" class="source-catalog-grid"><p class="loading">Loading source categories…</p></div>
+        </section>
+      </div>
+
+      <div data-product-view="job-matches" class="hidden">
+        <section class="page-intro">
+          <div>
+            <p class="eyebrow">STEP 5–6</p>
+            <h2>Review your best matches</h2>
+            <p>Each card explains the score, strengths, missing requirements, and the safest next action.</p>
+          </div>
+          <button class="help-button" type="button" data-help-toggle="matchesHelp">What is this?</button>
+        </section>
+        <div id="matchesHelp" class="help-panel hidden">
+          Match scores help you prioritize; they do not predict hiring outcomes. Approve only jobs you personally want to continue.
+        </div>
+        <section class="job-inventory" aria-label="Job inventory">
+          <button type="button" class="inventory-chip active" data-job-inventory="current"><span>Current results</span><strong id="inventoryCurrentCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="all"><span>All discovered</span><strong id="inventoryAllCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="new"><span>New jobs</span><strong id="inventoryNewCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="seen"><span>Previously seen</span><strong id="inventorySeenCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="recommended"><span>Recommended</span><strong id="inventoryRecommendedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="saved"><span>Saved</span><strong id="inventorySavedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="rejected"><span>Rejected</span><strong id="inventoryRejectedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="approved"><span>Approved</span><strong id="inventoryApprovedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="applied"><span>Applied</span><strong id="inventoryAppliedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="archived"><span>Archived search history</span><strong id="inventoryArchivedCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="manual_only"><span>Manual only</span><strong id="inventoryManualOnlyCount">0</strong></button>
+          <button type="button" class="inventory-chip" data-job-inventory="unsupported"><span>Unsupported</span><strong id="inventoryUnsupportedCount">0</strong></button>
+        </section>
+        <section id="searchTransparency" class="search-transparency" aria-label="Search transparency"></section>
+        <div id="jobWorkflowNotice" class="settings-status hidden" role="status" aria-live="polite"></div>
+        <details class="filter-disclosure">
+          <summary>Filter and sort matches</summary>
+          <section class="filters">
+            <label>Job status
+              <select id="filterApprovalStatus">
+                <option value="active">Active jobs</option>
+                <option value="" selected>All history</option>
+                <option value="new">New</option>
+                <option value="saved">Saved</option>
+                <option value="approved">Approved</option>
+                <option value="applied">Applied</option>
+                <option value="rejected">Rejected history</option>
+                <option value="manual_only">Manual only</option>
+                <option value="unsupported">Unsupported</option>
+              </select>
+            </label>
+            <label>Application status
+              <select id="filterApplicationStatus">
+                <option value="">All</option>
+                <option value="DISCOVERED">Discovered</option>
+                <option value="REVIEW_PENDING">Review Pending</option>
+                <option value="SAVED">Saved</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="APPROVED_FOR_PACKAGE">Ready to Prepare</option>
+                <option value="PACKAGE_READY">Ready to Review</option>
+                <option value="FILL_APPROVED">AI Fill Approved</option>
+                <option value="EXECUTOR_READY">AI Fill Starting</option>
+                <option value="EXECUTING">AI Fill in Progress</option>
+                <option value="NEEDS_REVIEW">Needs Your Review</option>
+                <option value="READY_FOR_MANUAL_SUBMIT">Ready for Your Submission</option>
+                <option value="MANUALLY_SUBMITTED">Submitted (Recorded)</option>
+                <option value="RECOVERY_REQUIRED">Needs Recovery</option>
+                <option value="CANCELLED">Cancelled</option>
+                <option value="MANUAL_ONLY">Manual Only</option>
+                <option value="UNSUPPORTED">Unsupported</option>
+              </select>
+            </label>
+            <label>Provider<select id="filterProvider"><option value="">All</option></select></label>
+            <label>Page type<select id="filterPageType"><option value="">All</option></select></label>
+            <label>Score
+              <select id="filterScore">
+                <option value="">All</option>
+                <option value="90">90+</option>
+                <option value="80">80+</option>
+                <option value="70">70+</option>
+                <option value="60">60+</option>
+                <option value="0">Below 60</option>
+              </select>
+            </label>
+            <label>Sort
+              <select id="sortJobs">
+                <option value="freshness_desc">New and recent first</option>
+                <option value="score_desc">Score high to low</option>
+                <option value="score_asc">Score low to high</option>
+                <option value="title_asc">Title A–Z</option>
+              </select>
+            </label>
+            <label>Location<input type="text" id="filterLocation" placeholder="e.g. Singapore or Remote"></label>
+            <label>Search<input type="text" id="filterText" placeholder="Title, company, skill…"></label>
+          </section>
+        </details>
+        <div class="job-list-meta">
+          <strong id="jobListSummary">Showing 0 of 0 jobs</strong>
+          <span>Rejected jobs remain available in Rejected history.</span>
+        </div>
+        <section id="jobsTableBody" class="job-match-list" aria-live="polite">
+          <p class="loading">Loading matches…</p>
+        </section>
+        <button id="loadMoreJobsBtn" class="btn-secondary load-more-jobs hidden" type="button">Load More</button>
+      </div>
+
+      <div data-product-view="applications" class="hidden">
+        <section class="page-intro">
+          <div>
+            <p class="eyebrow">STEP 7–10</p>
+            <h2>Prepare and review applications</h2>
+            <p>See what is ready, what needs you, and when it is safe to open the application form.</p>
+          </div>
+          <button class="help-button" type="button" data-help-toggle="applicationsHelp">What is this?</button>
+        </section>
+        <div id="applicationsHelp" class="help-panel hidden">
+          Resume Jobs prepares a local application package and fills only known, approved fields. You handle unknown questions and final submission.
+        </div>
+        <section class="applications-control">
+          <div>
+            <h3>Selected applications</h3>
+            <p id="jobSelectionStatus">Selected 0 of 0 approved jobs.</p>
+          </div>
+          <button id="buildSelectedPackagesBtn" class="btn-primary" type="button">Build Application Packages</button>
+        </section>
+        <section id="applicationCards" class="application-list"></section>
+        <section id="packageReviewPanel" class="package-review-panel hidden">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">APPLICATION PACKAGE</p>
+              <h2 id="packageReviewTitle">Application Package</h2>
+              <p>Review each checkpoint before allowing safe field fill.</p>
+            </div>
+            <button id="closePackageReviewBtn" type="button" class="btn-secondary">Close</button>
+          </div>
+          <div class="package-review-summary" aria-label="Application readiness summary">
+            <div><span>Candidate facts</span><strong id="packageFactCount">—</strong></div>
+            <div><span>Core fact coverage</span><strong id="packageFactCoverage">—</strong></div>
+            <div><span>Career Profile</span><strong id="packageProfileVisible">—</strong></div>
+            <div><span>Estimated completion</span><strong id="packageCompletionRate">—</strong></div>
+            <div><span>Estimated review</span><strong id="packageReviewTime">—</strong></div>
+          </div>
+          <p id="packageMissingFacts" class="package-review-note"></p>
+          <section class="package-content-grid" aria-label="Application Package contents">
+            <article class="package-content-card">
+              <p class="eyebrow">RESUME VERSION</p>
+              <h3 id="packageResumeVisible">Not selected</h3>
+              <p id="packageResumeVisibleDetail">Choose an approved version below.</p>
+            </article>
+            <article class="package-content-card">
+              <p class="eyebrow">COVER LETTER</p>
+              <h3 id="packageCoverLetterState">Needs review</h3>
+              <div id="packageCoverLetterPreview" class="package-text-preview">No cover letter draft yet.</div>
+            </article>
+            <article class="package-content-card">
+              <p class="eyebrow">INTERVIEW QUESTIONS</p>
+              <h3 id="packageInterviewQuestionCount">0 prepared</h3>
+              <ul id="packageInterviewQuestions"><li>Build the package to prepare role-specific questions.</li></ul>
+            </article>
+            <article class="package-content-card">
+              <p class="eyebrow">STAR STORIES</p>
+              <h3 id="packageStarStoryCount">0 selected</h3>
+              <ul id="packageStarStories"><li>Add verified stories in Career Brain.</li></ul>
+            </article>
+            <article class="package-content-card">
+              <p class="eyebrow">MISSING SKILLS</p>
+              <h3 id="packageMissingSkillCount">0 identified</h3>
+              <ul id="packageMissingSkills"><li>No package gaps assessed yet.</li></ul>
+            </article>
+            <article class="package-content-card package-risk-card">
+              <p class="eyebrow">RISK</p>
+              <h3 id="packageRiskLevel">Not assessed</h3>
+              <ul id="packageRiskReasons"><li>Review the package before safe fill.</li></ul>
+            </article>
+          </section>
+          <ol id="packageTimeline" class="application-timeline"></ol>
+          <div id="packageQuestions" class="review-needed-card"></div>
+          <div class="package-resume-choice">
+            <label for="packageResumeSelect">Resume for this application
+              <select id="packageResumeSelect"></select>
+            </label>
+            <div>
+              <strong id="packageResumeRecommendation">Recommendation unavailable</strong>
+              <p id="packageResumeReason" class="package-review-note"></p>
+            </div>
+            <button id="rebuildPackageResumeBtn" type="button" class="btn-secondary">Use selected version</button>
+          </div>
+          <section class="executor-choice" aria-labelledby="executorChoiceTitle">
+            <div>
+              <p class="eyebrow">AI FILL ASSISTANT</p>
+              <h3 id="executorChoiceTitle">Choose how to open and fill</h3>
+              <p id="executorModeDescription" class="package-review-note">Chrome Extension is the recommended normal mode.</p>
+            </div>
+            <label for="applicationExecutorMode">Fill method
+              <select id="applicationExecutorMode">
+                <option value="extension">Chrome Extension (recommended)</option>
+                <option value="local_browser_agent">Local Browser Agent (advanced)</option>
+              </select>
+            </label>
+          </section>
+          <section id="executorStatusPanel" class="executor-status" aria-live="polite">
+            <div><span>Status</span><strong id="executorRunStatus">Not started</strong></div>
+            <div><span>Connected</span><strong id="executorConnected">No</strong></div>
+            <div><span>Fields</span><strong id="executorFieldCounts">0 detected · 0 filled · 0 skipped</strong></div>
+            <div class="executor-reasons"><span>Blocked by / next</span><strong id="executorBlockers">Start AI Fill Assistant when this package is ready.</strong></div>
+            <div class="executor-reasons"><span>Skipped reasons</span><strong id="executorReasons">None yet</strong></div>
+            <div id="executorSkippedDetails" class="executor-reasons hidden"><span>Skipped field summary</span><strong id="executorReasonGroups">No skipped fields recorded.</strong></div>
+            <details class="advanced-disclosure compact executor-reasons">
+              <summary>Advanced diagnostics</summary>
+              <div class="executor-status">
+                <div><span>Session ID</span><strong id="executorSessionId">Not created</strong></div>
+                <div><span>Job ID</span><strong id="executorJobId">Not selected</strong></div>
+                <div><span>Package ID</span><strong id="executorPackageId">Not selected</strong></div>
+                <div><span>Profile version</span><strong id="executorProfileVersion">Not approved</strong></div>
+                <div><span>Executor</span><strong id="executorType">Chrome Extension</strong></div>
+                <div class="executor-reasons"><span>Target URL</span><strong id="executorTargetUrl">Not selected</strong></div>
+              </div>
+            </details>
+          </section>
+          <div class="inline-actions package-primary-actions" aria-label="Application package actions">
+            <button id="recoverApplicationSessionBtn" type="button" class="btn-warning hidden">Recover and rebuild</button>
+            <button id="restartFillSetupBtn" type="button" class="btn-warning hidden">Restart fill setup</button>
+            <button id="approveFillFromPackageBtn" type="button" class="btn-secondary">Approve AI Fill</button>
+            <button id="openApplicationPageBtn" type="button" class="btn-secondary hidden">Open application page</button>
+            <button id="reviewSkippedFieldsBtn" type="button" class="btn-secondary hidden">Review skipped fields</button>
+            <button id="reviewRescanBtn" type="button" class="btn-secondary hidden">Re-scan application</button>
+            <button id="markReviewCompleteBtn" type="button" class="btn-primary hidden">Mark review complete</button>
+            <button id="markSubmittedFromPackageBtn" type="button" class="btn-primary hidden">I submitted this application</button>
+            <button id="startFillFromPackageBtn" type="button" class="btn-primary">Start AI Fill Assistant</button>
+            <span id="packageActionHint" class="package-review-note">AI fills known fields and pauses for your review. Select an approved resume version first.</span>
+          </div>
+          <section id="learningReviewSection" class="learning-review hidden" aria-labelledby="learningReviewTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">CONFIRMED LEARNING</p>
+                <h3 id="learningReviewTitle">New information found</h3>
+                <p>Review each item. Nothing is saved or reused until you explicitly confirm it.</p>
+              </div>
+              <span id="learningCandidateCount" class="status-badge">0 pending</span>
+            </div>
+            <div id="learningReviewStatus" class="settings-status hidden" role="status" tabindex="-1"></div>
+            <div id="learningCandidateList" class="learning-candidate-list"></div>
+          </section>
+          <details class="advanced-disclosure">
+            <summary>Advanced package details</summary>
+            <pre id="packageReviewContent"></pre>
+          </details>
+        </section>
+      </div>
+
+      <div data-product-view="interview-preparation" class="hidden">
+        <section class="page-intro">
+          <div>
+            <p class="eyebrow">CAREER AGENT</p>
+            <h2>Interview preparation</h2>
+            <p>Turn verified Career Brain stories and match gaps into a focused preparation plan for each approved opportunity.</p>
+          </div>
+        </section>
+        <section id="interviewPreparationContainer" class="interview-preparation-list" aria-live="polite">
+          <p class="loading">Loading interview preparation…</p>
+        </section>
+      </div>
+    </main>
+
+    <main id="settingsView" class="hidden">
+      <section class="settings-panel">
+        <div id="settingsStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+
+        <div data-product-view="career-brain" class="hidden">
+          <section class="page-intro">
+            <div>
+              <p class="eyebrow">STEP 1</p>
+              <h2>Upload your resume</h2>
+              <p>Add one PDF, DOCX, or UTF-8 TXT resume. The file stays on this computer and is never submitted automatically.</p>
+            </div>
+            <button class="help-button" type="button" data-help-toggle="resumeHelp">What is this?</button>
+          </section>
+          <div id="resumeHelp" class="help-panel hidden">
+            Resume Jobs keeps versioned local copies so each application uses the resume you reviewed. Upload automatically runs local parsing and creates an unapproved Profile draft for review.
+          </div>
+          <section id="resumeUploadCard" class="upload-card">
+            <label class="upload-dropzone" for="resumeUploadFile">
+              <span class="upload-icon" aria-hidden="true">↑</span>
+              <strong>Upload your resume</strong>
+              <span>Drag or choose a PDF, DOCX, or UTF-8 TXT file, up to 10 MB</span>
+              <input id="resumeUploadFile" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+            </label>
+            <div class="upload-actions">
+              <span id="resumeUploadFileHint">PDF, DOCX, or UTF-8 TXT, up to 10 MB.</span>
+              <button id="registerResumeFileBtn" class="btn-primary btn-large" type="button">Upload Resume</button>
+            </div>
+            <details class="advanced-disclosure">
+              <summary>Optional resume details</summary>
+              <div class="form-stack">
+                <label class="settings-field">Library name<input id="resumeUploadName" type="text" placeholder="e.g. Product Manager Resume"></label>
+                <label class="settings-field">Target roles<input id="resumeUploadRoles" type="text" placeholder="e.g. Product Manager"></label>
+                <label class="settings-field">Language<input id="resumeUploadLanguage" type="text" placeholder="e.g. en or zh-CN"></label>
+                <label class="choice-row"><input id="resumeUploadActivate" type="checkbox" checked> Use this as my active resume</label>
+              </div>
+            </details>
+          </section>
+          <div id="resumeUploadStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+          <section id="resumeExistingSection" class="journey-card hidden">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">RESUME ADDED</p>
+                <h3>Your local resume library</h3>
+                <p id="resumeJourneyState">Review the version, then continue to your AI Profile.</p>
+              </div>
+            </div>
+            <div id="resumeProfilesSettings"></div>
+            <details class="advanced-disclosure">
+              <summary>Advanced resume metadata</summary>
+              <label class="settings-field active-profile-field">Active Resume Profile ID
+                <input id="activeResumeProfileId" type="text" placeholder="profile id">
+              </label>
+              <div class="inline-actions">
+                <button type="button" class="btn-secondary" id="addResumeProfileBtn">Add metadata only</button>
+                <button id="saveResumeProfilesBtn" class="btn-primary" type="button">Save resume metadata</button>
+              </div>
+            </details>
+          </section>
+        </div>
+
+        <div data-product-view="career-brain" class="hidden">
+          <section class="page-intro">
+            <div>
+              <p class="eyebrow">STEP 2</p>
+              <h2>Review your Career Brain</h2>
+              <p>Resume Jobs detected these facts from your reviewed local sources. Confirm only what is accurate.</p>
+            </div>
+            <button class="help-button" type="button" data-help-toggle="profileHelp">What is this?</button>
+          </section>
+          <div id="profileHelp" class="help-panel hidden">
+            Your Profile is the reusable fact base for application forms. It keeps each value’s source and confidence so Resume Jobs never invents experience.
+          </div>
+          <section class="settings-section career-brain-section">
+            <div class="section-heading">
+              <div>
+                <h3>Career Profiles</h3>
+                <p>Edit structured career knowledge, keep independent profiles for different goals, and approve only a version you have reviewed.</p>
+              </div>
+              <span id="careerBrainState" class="provider-state">DRAFT</span>
+            </div>
+            <div id="careerBrainApprovalBar" class="career-approval-bar"><p class="loading">Loading approval summary…</p></div>
+            <div id="careerBrainEditor"><p class="loading">Loading Career Brain…</p></div>
+            <div id="careerBrainStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+          </section>
+          <section class="settings-section candidate-facts-section">
+            <div class="section-heading">
+              <div>
+                <h3>AI detected these facts</h3>
+                <p>Review each section below. Sensitive facts will still be confirmed for every application.</p>
+              </div>
+              <button id="confirmCandidateFactsBtn" class="btn-primary" type="button" disabled>Approve Profile</button>
+            </div>
+            <div id="candidateFactsSummary" class="candidate-facts-summary"></div>
+            <div id="candidateFactsSettings" class="candidate-facts-list">
+              <p class="loading">Loading your Profile…</p>
+            </div>
+          </section>
+          <section class="settings-section">
+            <div class="section-heading">
+              <div>
+                <h3>Profile versions</h3>
+                <p>Save the current Profile as a named snapshot, or restore an earlier version. Restoring always requires Profile review again.</p>
+              </div>
+            </div>
+            <div class="inline-actions profile-version-create">
+              <label class="settings-field">Version name
+                <input id="candidateProfileVersionName" type="text" maxlength="80" placeholder="e.g. Product roles profile">
+              </label>
+              <button id="saveCandidateProfileVersionBtn" class="btn-primary" type="button">Save New Version</button>
+            </div>
+            <div id="candidateProfileVersions" class="settings-groups"></div>
+          </section>
+          <details class="advanced-disclosure">
+            <summary>Advanced · Answer Memory</summary>
+            <section class="settings-section">
+              <h3>Confirmed Answer Memory</h3>
+              <p class="settings-help">Save only answers you explicitly confirmed. Changed answers create a new version.</p>
+              <div class="form-stack">
+                <label class="settings-field">Original question<textarea id="answerMemoryQuestion" placeholder="Question as shown on an application"></textarea></label>
+                <label class="settings-field">Confirmed answer<textarea id="answerMemoryAnswer" placeholder="Your confirmed answer"></textarea></label>
+                <label class="settings-field">Source
+                  <select id="answerMemorySource">
+                    <option value="user_confirmed">User confirmed</option>
+                    <option value="user_entered">User entered</option>
+                    <option value="resume_derived">Resume derived</option>
+                    <option value="historical_confirmed">Historical confirmed</option>
+                    <option value="model_suggested">Model suggested (not confirmed)</option>
+                  </select>
+                </label>
+                <label class="settings-field">Scope<input id="answerMemoryScope" type="text" value="global"></label>
+                <label class="settings-field">Sensitive category<input id="answerMemorySensitive" type="text" value="none"></label>
+                <label class="choice-row"><input id="answerMemoryConfirmed" type="checkbox"> I confirm this answer</label>
+                <button id="saveAnswerMemoryBtn" class="btn-primary" type="button">Save Answer</button>
+              </div>
+              <div id="answerMemoryList" class="form-stack" aria-live="polite"></div>
+            </section>
+          </details>
+        </div>
+
+        <div data-product-view="job-discovery" class="hidden">
+          <aside id="providerSetupGuide" class="settings-warning hidden" role="status" aria-live="polite">
+            <strong>Configure a Job Search Source</strong>
+            <p>Live Search needs one enabled, healthy provider. SearXNG is supported today; AI is optional and never blocks search.</p>
+            <ol>
+              <li>Open Settings.</li>
+              <li>Enter the SearXNG endpoint.</li>
+              <li>Save and enable the provider.</li>
+              <li>Choose Test Connection.</li>
+              <li>Return here and search again.</li>
+            </ol>
+            <div class="inline-actions">
+              <button id="configureJobSourcesBtn" class="btn-primary" type="button">Configure Job Search</button>
+              <button id="guideOfflineDemoBtn" class="btn-secondary" type="button">Use Synthetic Offline Demo</button>
+            </div>
+          </aside>
+          <section class="search-plan-panel" aria-labelledby="searchPlanTitle">
+            <div class="section-heading">
+              <div><p class="eyebrow">EXPLAINABLE SEARCH PLAN</p><h3 id="searchPlanTitle">What Resume Jobs will search</h3></div>
+              <span id="searchPlanGeneratedAt" class="provider-state">DRAFT</span>
+            </div>
+            <p>Review the target roles, adjacent paths, locations, keywords, and public sources before searching.</p>
+            <div id="searchPlanSummary" class="search-plan-summary"><p class="loading">Building a plan from Career Brain and Search Configuration…</p></div>
+            <details class="search-plan-queries">
+              <summary>Planned queries and reasons</summary>
+              <div id="searchPlanQueries"><p class="loading">No queries planned yet.</p></div>
+            </details>
+          </section>
+          <section class="search-builder">
+            <div class="form-stack">
+              <label class="settings-field">Search mode
+                <select id="searchModeSelect">
+                  <option value="live">Live Search</option>
+                  <option value="live_ai">Live Search + AI Enrichment</option>
+                  <option value="offline_demo">Offline Demo (synthetic, no network)</option>
+                </select>
+              </label>
+              <p id="searchModeHelp" class="settings-help">Live Search discovers public job pages and uses deterministic scoring. AI enrichment is optional.</p>
+              <label class="settings-field">
+                <span>Target role <button class="tooltip" type="button" title="The role you want Resume Jobs to prioritize.">?</button></span>
+                <input id="searchPrimaryRole" type="text" data-simple-search-field="target_role" aria-label="Target role" placeholder="e.g. Product Manager">
+              </label>
+              <label class="settings-field">
+                <span>Location <button class="tooltip" type="button" title="Use a city, country, or Remote.">?</button></span>
+                <input id="searchPrimaryLocation" type="text" data-simple-search-field="preferred_location" aria-label="Preferred location" placeholder="e.g. Singapore or Remote">
+              </label>
+              <fieldset class="choice-group" data-contract-field="workplace_modes">
+                <legend>Workplace</legend>
+                <label><input type="radio" name="workplaceMode" value="onsite" data-simple-search-field="workplace_mode"> Onsite</label>
+                <label><input type="radio" name="workplaceMode" value="hybrid" data-simple-search-field="workplace_mode"> Hybrid</label>
+                <label><input type="radio" name="workplaceMode" value="remote" data-simple-search-field="workplace_mode"> Remote</label>
+                <label><input type="radio" name="workplaceMode" value="any" data-simple-search-field="workplace_mode"> Any</label>
+              </fieldset>
+              <label class="settings-field">Experience level
+                <select id="searchExperienceLevel" data-simple-search-field="seniority" data-contract-field="seniority_levels">
+                  <option value="any">Any</option>
+                  <option value="entry">Entry</option>
+                  <option value="junior">Junior</option>
+                  <option value="mid">Mid</option>
+                  <option value="senior">Senior</option>
+                  <option value="lead">Lead</option>
+                  <option value="manager">Manager</option>
+                </select>
+              </label>
+              <label class="settings-field">Required skills
+                <input type="text" data-search-profile-field="required_skills" data-value-type="csv" placeholder="e.g. Product strategy, SQL">
+              </label>
+              <label class="settings-field">Preferred skills
+                <input type="text" data-search-profile-field="preferred_skills" data-value-type="csv" placeholder="e.g. AI, B2B SaaS">
+              </label>
+              <label class="settings-field">Excluded companies
+                <input type="text" data-search-profile-field="excluded_companies" data-value-type="csv" placeholder="Companies you do not want to see">
+              </label>
+              <label class="settings-field">Minimum salary <span class="optional">Optional</span>
+                <input type="number" min="0" data-search-profile-field="minimum_salary" data-value-type="optional-number" placeholder="Leave blank if flexible">
+              </label>
+              <label class="settings-field">Maximum results
+                <input type="number" min="1" max="500" data-search-profile-field="maximum_search_results" data-value-type="number" value="20">
+              </label>
+              <button id="findMatchingJobsBtn" class="btn-primary btn-large" type="button">Find Matching Jobs</button>
+              <section class="job-url-import" aria-labelledby="jobUrlImportTitle">
+                <div>
+                  <h3 id="jobUrlImportTitle">Already have a job link?</h3>
+                  <p>Import one public job or discover listings from a public application form or company career page, then use the same normalization, deduplication, and scoring pipeline.</p>
+                </div>
+                <label class="settings-field">Public job or career page URL
+                  <input id="jobUrlImportInput" type="url" inputmode="url" placeholder="https://jobs.lever.co/company or a public job URL" autocomplete="off">
+                </label>
+                <button id="importJobUrlBtn" class="btn-secondary" type="button">Import and Score</button>
+                <div id="jobUrlImportStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+                <p class="settings-help">This reads public page metadata only. It does not log in, open an application form, upload your resume, or submit anything.</p>
+              </section>
+              <section id="searchProgressPanel" class="search-progress hidden" aria-live="polite">
+                <strong id="searchProgressTitle">Preparing search…</strong>
+                <ol id="searchProgressSteps">
+                  <li data-search-stage="save">Preparing search</li>
+                  <li data-search-stage="health">Checking provider health</li>
+                  <li data-search-stage="search">Searching sources</li>
+                  <li data-search-stage="normalize">Normalizing jobs</li>
+                  <li data-search-stage="dedupe">Deduplicating and filtering</li>
+                  <li data-search-stage="score">Scoring</li>
+                  <li data-search-stage="ai">AI enrichment (optional)</li>
+                  <li data-search-stage="complete">Complete</li>
+                </ol>
+              </section>
+              <section id="searchResultSummary" class="search-result-summary hidden" aria-live="polite"></section>
+              <aside id="offlineDemoOption" class="settings-warning hidden" role="status" aria-live="polite">
+                <strong>Live Search is not configured.</strong>
+                <p>Continue the full product walkthrough with one synthetic localhost-only job. This uses no network and never opens a real job site.</p>
+                <button id="runOfflineDemoSearchBtn" class="btn-secondary" type="button">Use Offline Demo Job</button>
+              </aside>
+            </div>
+          </section>
+
+          <details class="advanced-disclosure">
+            <summary>Advanced search options</summary>
+            <section class="settings-section">
+              <div class="section-heading">
+                <h3>Search configuration</h3>
+                <div class="inline-actions">
+                  <button id="createSearchProfileBtn" class="btn-secondary" type="button">New</button>
+                  <button id="copySearchProfileBtn" class="btn-secondary" type="button">Duplicate</button>
+                </div>
+              </div>
+              <div class="form-stack">
+                <label class="settings-field">Active configuration<select id="searchProfileSelect"></select></label>
+                <label class="settings-field">Name<input id="searchProfileName" type="text" data-search-profile-field="name" required></label>
+                <label class="choice-row"><input id="searchProfileEnabled" type="checkbox" data-search-profile-field="enabled"> Search enabled</label>
+                <label class="settings-field">Job types<input type="text" data-search-profile-field="job_types" data-value-type="csv" placeholder="full_time, contract, internship"></label>
+                <label class="settings-field">Posted within days<input type="number" min="1" max="365" data-search-profile-field="posted_within_days" data-value-type="number"></label>
+                <label class="settings-field">Maximum jobs to open<input type="number" min="1" max="50" data-search-profile-field="maximum_jobs_to_open" data-value-type="number"></label>
+                <fieldset class="search-memory-policy">
+                  <legend>Discovery memory</legend>
+                  <label class="choice-row"><input type="checkbox" data-search-profile-field="show_unseen_only"> Show unseen jobs only</label>
+                  <label class="choice-row"><input type="checkbox" data-search-profile-field="include_previously_seen"> Include previously seen jobs after the repeat window</label>
+                  <label class="choice-row"><input type="checkbox" data-search-profile-field="do_not_repeat_rejected"> Do not repeat rejected jobs</label>
+                  <label class="choice-row"><input type="checkbox" data-search-profile-field="do_not_repeat_approved"> Do not repeat approved jobs</label>
+                  <label class="choice-row"><input type="checkbox" data-search-profile-field="do_not_repeat_applied"> Do not repeat applied jobs</label>
+                  <label class="settings-field">Repeat previously seen jobs after days<input type="number" min="0" max="365" data-search-profile-field="repeat_after_days" data-value-type="number"></label>
+                  <label class="settings-field">Maximum current results per company<input type="number" min="1" max="50" data-search-profile-field="maximum_results_per_company" data-value-type="number"></label>
+                  <label class="settings-field">Minimum source diversity<input type="number" min="1" max="10" data-search-profile-field="minimum_source_diversity" data-value-type="number"></label>
+                  <p class="settings-help">Jobs outside these limits remain in local history and can still be found in the inventory.</p>
+                </fieldset>
+              </div>
+            </section>
+            <section class="settings-section">
+              <div class="section-heading"><h3>All target roles</h3><button type="button" class="btn-secondary" data-add-setting="target_roles">Add role</button></div>
+              <div id="targetRolesSettings"></div>
+            </section>
+            <section class="settings-section">
+              <div class="section-heading"><h3>All locations</h3><button type="button" class="btn-secondary" data-add-setting="preferred_locations">Add location</button></div>
+              <div id="preferredLocationsSettings"></div>
+            </section>
+            <section class="settings-section">
+              <div class="section-heading"><h3>Excluded keywords</h3><button type="button" class="btn-secondary" data-add-setting="excluded_keywords">Add exclusion</button></div>
+              <div id="excludedKeywordsSettings"></div>
+            </section>
+            <section class="settings-section">
+              <div class="section-heading"><h3>Preferred companies</h3><button type="button" class="btn-secondary" data-add-setting="preferred_companies">Add company</button></div>
+              <div id="preferredCompaniesSettings"></div>
+            </section>
+            <div class="inline-actions">
+              <button id="saveSearchPreferencesBtn" class="btn-primary" type="button">Save Search</button>
+            </div>
+          </details>
+
+          <details class="advanced-disclosure">
+            <summary>Search activity and provider health</summary>
+            <section class="automation-status">
+              <div class="section-heading">
+                <div><h3>Latest search activity</h3><span id="automationStatusBadge" class="status-badge">Loading</span></div>
+                <div class="inline-actions">
+                  <button id="runDiscoveryBtn" class="btn-secondary" type="button">Run Search Only</button>
+                  <button id="runScoringBtn" class="btn-secondary" type="button">Score Jobs</button>
+                  <button id="runApprovalQueueBtn" class="btn-secondary" type="button">Prepare Review Queue</button>
+                </div>
+              </div>
+              <div id="automationStatusContainer" class="automation-grid"><p class="loading">Loading latest run…</p></div>
+            </section>
+            <section class="provider-health">
+              <h3>Provider health</h3>
+              <div id="providerHealthContainer" class="health-cards"><p class="loading">Loading provider status…</p></div>
+            </section>
+          </details>
+        </div>
+
+        <div data-product-view="ai-settings" class="hidden">
+          <section class="page-intro">
+            <div>
+              <p class="eyebrow">PREFERENCES</p>
+              <h2>Settings</h2>
+              <p>Understand how Resume Jobs behaves. Safety-critical actions remain locked and human-controlled.</p>
+            </div>
+            <button class="help-button" type="button" data-help-toggle="settingsHelp">What is this?</button>
+          </section>
+          <div id="settingsHelp" class="help-panel hidden">
+            Settings explain local behavior and safety boundaries. Search targets belong in Job Search; resume and profile information stay in their own pages.
+          </div>
+          <section id="jobSearchSourcesSection" class="settings-section">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">DISCOVERY</p>
+                <h3>Job Search Sources</h3>
+              </div>
+            </div>
+            <p class="settings-help">Search providers discover public job pages. They are separate from the optional AI provider used only for enrichment.</p>
+            <div id="jobSearchSourcesContainer"><p class="loading">Loading provider configuration…</p></div>
+            <div id="jobSearchSourceStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+          </section>
+          <section id="aiProviderSection" class="settings-section">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">OPTIONAL AI</p>
+                <h3>AI Provider</h3>
+              </div>
+            </div>
+            <p class="settings-help">AI can explain matches and draft suggestions. It cannot approve jobs, change deterministic scores, upload a resume, or submit an application.</p>
+            <div id="aiProviderContainer"><p class="loading">Loading AI provider configuration…</p></div>
+            <div id="aiProviderStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+          </section>
+          <section id="extensionConnectionSection" class="settings-section" aria-labelledby="extensionConnectionTitle">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">BROWSER CONNECTION</p>
+                <h3 id="extensionConnectionTitle">Extension Connection</h3>
+                <p>Check whether AI Fill Assistant is installed and ready for the current application. Technical connection details are available under Advanced diagnostics.</p>
+              </div>
+              <button id="refreshExtensionDiagnosticsBtn" class="btn-secondary" type="button">Refresh diagnostics</button>
+            </div>
+            <div id="extensionConnectionDiagnostics" class="extension-diagnostic-grid" role="status" aria-live="polite">
+              <p class="loading">Checking AI Fill Assistant…</p>
+            </div>
+            <p class="settings-help">Open the Resume Jobs extension popup on the current application tab, then refresh. Native Messaging is not used; the extension communicates with the loopback Dashboard over HTTP.</p>
+          </section>
+          <div id="safetySettings" class="settings-groups"></div>
+          <section id="resetLocalDataSection" class="settings-section danger-zone">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">LOCAL DATA</p>
+                <h3>Reset Local Data</h3>
+              </div>
+            </div>
+            <p class="settings-help">Permanently removes local resumes, Candidate Profiles, jobs, applications, provider settings, reports, and product-owned browser state. Source code is not changed.</p>
+            <label class="settings-field">Type <strong>RESET LOCAL DATA</strong> to continue
+              <input id="resetLocalDataConfirmation" type="text" autocomplete="off" spellcheck="false">
+            </label>
+            <button id="resetLocalDataBtn" class="btn-danger" type="button" disabled>Reset Local Data</button>
+            <div id="resetLocalDataStatus" class="settings-status hidden" role="status" aria-live="polite"></div>
+          </section>
+          <div class="settings-warning">
+            Final submission, login, CAPTCHA/MFA, and external resume upload cannot be enabled from this Dashboard.
+          </div>
+          <button id="reloadSettingsBtn" class="btn-secondary" type="button">Reload local settings</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="productModalBackdrop" class="product-modal-backdrop hidden">
+    <section
+      id="productConfirmationModal"
+      class="product-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="productModalTitle"
+      aria-describedby="productModalMessage"
+    >
+      <p id="productModalEyebrow" class="eyebrow">CONFIRM ACTION</p>
+      <h2 id="productModalTitle">Confirm action</h2>
+      <p id="productModalMessage"></p>
+      <div class="product-modal-actions">
+        <button id="productModalCancelBtn" class="btn-secondary" type="button">Cancel</button>
+        <button id="productModalConfirmBtn" class="btn-primary" type="button">Confirm</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="productToastRegion" class="product-toast-region" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

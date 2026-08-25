@@ -1,0 +1,138 @@
+{
+  "127.0.0.1": {
+    "auto_fill_enabled": true,
+    "auto_fill_delay_ms": 1200,
+    "field_rules": [
+      {
+        "match": {
+          "name": "candidate_full_name",
+          "id": "",
+          "label": ""
+        },
+        "profile_key": "full_name",
+        "value_override": "",
+        "notes": "Local mock form example"
+      },
+      {
+        "match": {
+          "name": "passport_number",
+          "id": "",
+          "label": ""
+        },
+        "profile_key": "passport_number",
+        "value_override": "",
+        "notes": "Sensitive but fillable only because explicit site rule and profile value exist"
+      }
+    ],
+    "select_rules": [
+      {
+        "match": {
+          "label": "Work authorization"
+        },
+        "profile_key": "work_authorization",
+        "preferred_option_keywords": [
+          "Authorized",
+          "Yes",
+          "不需要赞助"
+        ]
+      }
+    ],
+    "radio_rules": [],
+    "checkbox_rules": [],
+    "never_fill": [
+      "password",
+      "captcha",
+      "verification code",
+      "验证码",
+      "OTP",
+      "短信验证码"
+    ],
+    "notes": "Local mock testing only",
+    "resume_upload_enabled": true,
+    "resume_upload_mode": "manual_attach_only",
+    "resume_upload_selectors": [
+      {
+        "match": "label_or_name_contains",
+        "keywords": [
+          "resume",
+          "cv",
+          "简历"
+        ],
+        "profile_key": "resume_file"
+      }
+    ]
+  },
+  "greenhouse.io": {
+    "auto_fill_enabled": true,
+    "auto_fill_delay_ms": 1200,
+    "field_rules": [
+      { "match": { "name": "first_name" }, "profile_key": "first_name" },
+      { "match": { "id": "first_name" }, "profile_key": "first_name" },
+      { "match": { "name": "last_name" }, "profile_key": "last_name" },
+      { "match": { "id": "last_name" }, "profile_key": "last_name" },
+      { "match": { "name": "email" }, "profile_key": "email" },
+      { "match": { "id": "email" }, "profile_key": "email" },
+      { "match": { "name": "phone" }, "profile_key": "phone" },
+      { "match": { "id": "phone" }, "profile_key": "phone" }
+    ],
+    "select_rules": [],
+    "radio_rules": [],
+    "checkbox_rules": [],
+    "never_fill": ["password", "captcha", "verification code", "one-time code", "submit application"],
+    "notes": "Reviewed Greenhouse core-field mappings. Upload and submit stay manual.",
+    "resume_upload_enabled": false,
+    "resume_upload_mode": "disabled",
+    "resume_upload_selectors": []
+  },
+  "lever.co": {
+    "auto_fill_enabled": true,
+    "auto_fill_delay_ms": 1200,
+    "field_rules": [
+      { "match": { "name": "name" }, "profile_key": "full_name" },
+      { "match": { "name": "email" }, "profile_key": "email" },
+      { "match": { "name": "phone" }, "profile_key": "phone" },
+      { "match": { "name": "location" }, "profile_key": "city" },
+      { "match": { "name": "urls[LinkedIn]" }, "profile_key": "linkedin" },
+      { "match": { "name": "urls[GitHub]" }, "profile_key": "github" },
+      { "match": { "name": "urls[Github]" }, "profile_key": "github" },
+      { "match": { "name": "urls[Portfolio]" }, "profile_key": "portfolio" }
+    ],
+    "select_rules": [],
+    "radio_rules": [],
+    "checkbox_rules": [],
+    "never_fill": ["password", "captcha", "verification code", "one-time code", "submit application"],
+    "notes": "Reviewed Lever core-field mappings. Upload and submit stay manual.",
+    "resume_upload_enabled": false,
+    "resume_upload_mode": "disabled",
+    "resume_upload_selectors": []
+  },
+  "jobs.example.com": {
+    "auto_fill_enabled": false,
+    "auto_fill_delay_ms": 1500,
+    "field_rules": [],
+    "select_rules": [],
+    "radio_rules": [],
+    "checkbox_rules": [],
+    "never_fill": [
+      "password",
+      "login password",
+      "captcha",
+      "verification code",
+      "OTP"
+    ],
+    "notes": "Enable only after testing manually",
+    "resume_upload_enabled": false,
+    "resume_upload_mode": "disabled",
+    "resume_upload_selectors": [
+      {
+        "match": "label_or_name_contains",
+        "keywords": [
+          "resume",
+          "cv",
+          "简历"
+        ],
+        "profile_key": "resume_file"
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Resume Jobs Application Assistant",
+  "version": "1.1.0",
+  "description": "The Resume Jobs Application Assistant. Shows live application status on real job pages and fills only the safe fields you confirmed, talking exclusively to the local Resume Jobs app. It stores no personal data, never uploads files, never logs in, never handles verifications, and never submits.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzskacPEQg0WC/omZMNqdSuLXoNsmlepi0JDJ2iS1TgKmi2pMHGFD2TRkPFktHrtjkdkw17KP9SXhQGtc9wXZr+pm5YaX1Ev9XqTHqMzqWp6ZsHIhXPfVQI+Z8KgNPQPzwnOEsqLqRqi6wtsWYi9G0fX5PVeyy5gFig2cngG/qY2gC1xc2rq/87ryFChzVlzI6jnh5SCfeo1wHK+hVrnF4jCje44pulDt6pcCrp2hEoyhynyebrw8h243cywoAdbRCjXBckaFxTYYE/ak2vS8LhxvEcre7qSFQyc2dYKzzmSI7Ebi78xUQU5CJIXylO92TkrxcyTCXehanoRnc3AuowIDAQAB",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Application Assistant",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*",
+    "https://*.greenhouse.io/*",
+    "https://jobs.lever.co/*",
+    "https://jobs.ashbyhq.com/*",
+    "https://*.myworkdayjobs.com/*",
+    "https://*.workdayjobs.com/*",
+    "https://*.smartrecruiters.com/*",
+    "https://apply.workable.com/*",
+    "https://*.nowcoder.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1/*",
+        "http://localhost/*",
+        "https://*/*"
+      ],
+      "js": [
+        "executor_core.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

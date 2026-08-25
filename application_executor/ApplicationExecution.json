@@ -1,0 +1,42 @@
+{
+  "schema": "ApplicationExecution",
+  "schema_version": "1.0",
+  "execution_id": "",
+  "application_id": "",
+  "job_id": "",
+  "package_id": "",
+  "run_id": "",
+  "executor": "extension",
+  "portal": "generic",
+  "url": "",
+  "started_at": null,
+  "completed_at": null,
+  "status": "paused_for_user_review",
+  "blocker": {
+    "blocked": false,
+    "reason": ""
+  },
+  "counts": {
+    "detected": 0,
+    "filled": 0,
+    "skipped": 0,
+    "failed": 0
+  },
+  "field_results": [],
+  "fields": {
+    "detected": [],
+    "filled": [],
+    "skipped": [],
+    "failed": []
+  },
+  "safety": {
+    "upload_attempted": false,
+    "resume_uploaded": false,
+    "login_attempted": false,
+    "challenge_attempted": false,
+    "submit_attempted": false,
+    "submitted": false,
+    "final_submit": false
+  },
+  "notes": []
+}

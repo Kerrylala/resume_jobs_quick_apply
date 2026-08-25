@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Tells the browser extension this is the app itself, never a form to fill. -->
+  <meta name="resume-jobs-app" content="quick">
+  <title>Resume Jobs · Quick Apply</title>
+  <link rel="stylesheet" href="quick.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">RJ</span>
+        <span class="brand-name" data-i18n="brand">Quick Apply</span>
+      </div>
+      <nav class="nav" id="mainNav">
+        <a href="#/home" data-route="home"><span class="nav-icon">🏠</span><span data-i18n="nav.home">首页</span></a>
+        <a href="#/jobs" data-route="jobs"><span class="nav-icon">💼</span><span data-i18n="nav.jobs">岗位</span></a>
+        <a href="#/apps" data-route="apps"><span class="nav-icon">📨</span><span data-i18n="nav.apps">申请</span><span class="nav-badge" id="appsBadge" hidden></span></a>
+        <a href="#/profile" data-route="profile"><span class="nav-icon">👤</span><span data-i18n="nav.profile">我的资料</span></a>
+        <a href="#/settings" data-route="settings"><span class="nav-icon">⚙️</span><span data-i18n="nav.settings">设置</span></a>
+      </nav>
+      <div class="nav-secondary">
+        <a href="#/tools" data-route="tools"><span data-i18n="nav.tools">职业工具</span></a>
+        <a href="/advanced" target="_blank" rel="noopener"><span data-i18n="nav.advanced">高级模式</span></a>
+        <button type="button" class="lang-toggle" id="langToggle">EN</button>
+      </div>
+    </aside>
+    <main class="main" id="mainOutlet" tabindex="-1"></main>
+  </div>
+
+  <!-- Drawer (preflight / job detail / apply progress) -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" hidden aria-modal="true" role="dialog">
+    <div class="drawer-head">
+      <h2 id="drawerTitle"></h2>
+      <button type="button" class="icon-button" id="drawerClose" aria-label="Close">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
+
+  <!-- Modal (confirmations) -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 id="modalTitle"></h3>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+
+  <script src="i18n.js"></script>
+  <script src="quick.js"></script>
+</body>
+</html>

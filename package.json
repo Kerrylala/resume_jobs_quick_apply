@@ -1,0 +1,86 @@
+{
+  "name": "resume-jobs-ai",
+  "version": "1.0.0-rc.1",
+  "description": "Local-first AI job application assistant with explainable matching, resume intelligence, answer memory, and human-controlled autofill.",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kerrylala/resume-jobs-quick-apply.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kerrylala/resume-jobs-quick-apply/issues"
+  },
+  "homepage": "https://github.com/Kerrylala/resume-jobs-quick-apply#readme",
+  "keywords": [
+    "job-application",
+    "local-first",
+    "resume",
+    "ai-assistant",
+    "playwright",
+    "chrome-extension"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node dashboard/server.mjs",
+    "app": "node dashboard/server.mjs",
+    "demo": "node scripts/run_offline_demo.mjs",
+    "demo:no-open": "node scripts/run_offline_demo.mjs --no-open",
+    "test": "npm run test:offline",
+    "test:offline": "node --import ./tests/offline_test_guard.mjs --test tests/agent_browser.test.mjs tests/ai_provider.test.mjs tests/ai_usage.test.mjs tests/answer_memory_migration.test.mjs tests/answers_api.test.mjs tests/api_contract_freeze.test.mjs tests/backend_freeze_endpoints.test.mjs tests/answer_reuse_end_to_end.test.mjs tests/application_completion.test.mjs tests/apply_state_vocabulary.test.mjs tests/application_profile_api.test.mjs tests/application_profile_projection.test.mjs tests/application_executor.test.mjs tests/application_package_2.test.mjs tests/application_package_profile_gate.test.mjs tests/application_state.test.mjs tests/approval_safety.test.mjs tests/backend_trust_scenarios.test.mjs tests/browser_agent_profile.test.mjs tests/candidate_matching.test.mjs tests/candidate_records.test.mjs tests/company_careers_import.test.mjs tests/career_brain.test.mjs tests/challenge_policy.test.mjs tests/continue_after_verification.test.mjs tests/cover_letter.test.mjs tests/data_lifecycle.test.mjs tests/clock_determinism.test.mjs tests/executor_capabilities.test.mjs tests/first_run_workflow.test.mjs tests/global_search_engine.test.mjs tests/form_field_memory.test.mjs tests/hybrid_matching.test.mjs tests/job_description_and_suppression.test.mjs tests/job_input_classification.test.mjs tests/job_records.test.mjs tests/job_search_agent.test.mjs tests/job_search_sources.test.mjs tests/job_url_ingestion.test.mjs tests/job_url_server.test.mjs tests/json_repository.test.mjs tests/learning_candidates.test.mjs tests/local_only_data.test.mjs tests/learning_server_contract.test.mjs tests/legacy_execution_recovery.test.mjs tests/mock_ats_demo.test.mjs tests/multi_job_workflow.test.mjs tests/no_ai_fallback.test.mjs tests/no_native_dialogs.test.mjs tests/offline_demo_jobs.test.mjs tests/offline_demo_report.test.mjs tests/offline_test_entry.test.mjs tests/portal_adapters.test.mjs tests/portal_field_mappings.test.mjs tests/product_workflow_e2e.test.mjs tests/profile_sections_api.test.mjs tests/profile_signals.test.mjs tests/project_paths.test.mjs tests/quick_apply_api.test.mjs tests/quick_ui.test.mjs tests/real_ats_field_mapping.test.mjs tests/resume_files.test.mjs tests/resume_export_binding.test.mjs tests/resume_tailoring.test.mjs tests/resume_upload_authorization.test.mjs tests/resume_upload_flow.test.mjs tests/rescan_freshness.test.mjs tests/resume_document_intelligence.test.mjs tests/resume_intelligence.test.mjs tests/search_pipeline_paths.test.mjs tests/search_preferences.test.mjs tests/session_binding.test.mjs tests/session_liveness.test.mjs tests/static_routing.test.mjs tests/suite_registration.test.mjs tests/user_takeover.test.mjs tests/workflow_state.test.mjs",
+    "test:challenge-policy": "node --import ./tests/offline_test_guard.mjs --test tests/challenge_policy.test.mjs tests/application_executor.test.mjs",
+    "test:e2e": "node --import ./tests/offline_test_guard.mjs --test tests/product_workflow_e2e.test.mjs",
+    "test:browser": "node scripts/test_job_apply_autofill_extension_local.mjs",
+    "test:browser:e2e": "node scripts/run_browser_e2e.mjs",
+    "test:browser:headed": "node scripts/test_job_apply_autofill_extension_local.mjs --headed",
+    "test:browser-agent": "node scripts/test_browser_agent_local.mjs",
+    "test:learning:browser-agent": "node scripts/test_confirmed_learning_browser_agent.mjs",
+    "test:browser-agent-dashboard": "node scripts/test_browser_agent_dashboard_local.mjs",
+    "test:dashboard-responsive": "node scripts/test_dashboard_responsive.mjs",
+    "test:dashboard-lifecycle": "node scripts/test_dashboard_lifecycle_cycles.mjs",
+    "test:browser-agent-crash": "node scripts/test_browser_agent_crash_cycles.mjs",
+    "test:reliability-matrix": "node scripts/run_reliability_matrix.mjs",
+    "test:launcher-cycles": "node scripts/test_launcher_cycles.mjs",
+    "test:soak": "node scripts/soak_dashboard.mjs",
+    "audit:release": "node scripts/audit_github_release.mjs",
+    "test:real-portals": "node scripts/test_real_portal_field_contracts.mjs",
+    "test:lever-pilot:contract": "node scripts/test_real_portal_field_contracts.mjs --portal lever",
+    "executor:sync-extension-core": "node scripts/sync_application_executor_core.mjs",
+    "test:approval-safety": "node --import ./tests/offline_test_guard.mjs --test tests/approval_safety.test.mjs",
+    "test:launcher": "node --test tests/windows_launcher.test.mjs",
+    "ai:check": "node scripts/check_local_model.mjs",
+    "validate": "node scripts/resume_jobs_cli.mjs validate",
+    "test:browser-agent-persistence": "node scripts/test_browser_agent_persistence.mjs",
+    "test:discovery-takeover": "node scripts/test_discovery_user_takeover.mjs",
+    "acceptance:real-ats": "node scripts/acceptance_real_ats.mjs",
+    "acceptance:local-model": "node scripts/acceptance_local_model.mjs",
+    "acceptance:continue": "node scripts/acceptance_continue_after_verification.mjs",
+    "acceptance:resume-tailoring": "node scripts/acceptance_resume_tailoring.mjs",
+    "acceptance:cover-letter": "node scripts/acceptance_cover_letter.mjs",
+    "acceptance:resume-files": "node scripts/acceptance_resume_files.mjs",
+    "acceptance:resume-upload": "node scripts/acceptance_resume_upload.mjs",
+    "acceptance:extension-installed": "node scripts/acceptance_extension_installed.mjs",
+    "acceptance:quick-apply-ui": "node scripts/acceptance_quick_apply_ui.mjs",
+    "acceptance:job-discovery": "node scripts/acceptance_job_discovery.mjs",
+    "acceptance:global-discovery": "node scripts/acceptance_global_discovery.mjs",
+    "acceptance:global-search": "node scripts/acceptance_global_search.mjs",
+    "acceptance:no-login-search": "node scripts/acceptance_no_login_search.mjs",
+    "search:searxng-up": "docker run -d --name resume-jobs-searxng -p 8888:8080 searxng/searxng",
+    "jobs:repair-inventory": "node scripts/fix_invalid_job_records.mjs",
+    "browser:install-agent-runtime": "npx --yes @puppeteer/browsers install chrome@stable --path browser_runtime"
+  },
+  "keywords": [
+    "job-search",
+    "resume",
+    "autofill",
+    "career",
+    "local-first",
+    "ai-agent"
+  ],
+  "dependencies": {
+    "pdfjs-dist": "^4.8.69",
+    "playwright-core": "1.50.1"
+  }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>申请助手</title>
+  <style>
+    :root { color-scheme: light; }
+    body { width: 320px; margin: 0; padding: 16px; font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; color: #172033; background: #fff; }
+    h1 { margin: 0 0 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    h1 .mark { display: inline-flex; width: 22px; height: 22px; border-radius: 6px; background: #2f80ed; color: #fff; font-size: 11px; font-weight: 800; align-items: center; justify-content: center; }
+    #jobLine { margin: 0 0 10px; font-size: 13px; color: #526070; overflow-wrap: anywhere; min-height: 17px; }
+    .status { display: flex; align-items: center; gap: 10px; padding: 14px 12px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fbfdff; }
+    .status .word { font-size: 15px; font-weight: 700; }
+    .status.busy .word { color: #8a5a00; }
+    .status.ok .word { color: #08783e; }
+    .status.attention .word { color: #9a3412; }
+    .spinner { width: 14px; height: 14px; border: 2px solid #d7e3f4; border-top-color: #2f80ed; border-radius: 50%; animation: spin 0.9s linear infinite; flex: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .dot.ok { background: #12b76a; } .dot.attention { background: #f97316; }
+    #detail { min-height: 18px; margin: 9px 0 0; color: #526070; font-size: 12px; line-height: 1.5; }
+    #questions { display: none; margin-top: 10px; }
+    #questions.visible { display: block; }
+    #questions h2 { margin: 0 0 6px; font-size: 13px; }
+    .question { margin-bottom: 8px; }
+    .question label { display: block; font-size: 12px; color: #172033; margin-bottom: 3px; overflow-wrap: anywhere; }
+    .question input, .question select { width: 100%; box-sizing: border-box; padding: 7px 9px; border: 1px solid #ccd4df; border-radius: 8px; font-size: 13px; }
+    button.primary { width: 100%; margin-top: 12px; padding: 10px; border: 1px solid #2f80ed; border-radius: 9px; background: #2f80ed; color: #fff; font-weight: 700; cursor: pointer; }
+    button.primary:disabled { opacity: .55; cursor: not-allowed; }
+    button.primary[hidden] { display: none; }
+    footer { margin-top: 12px; padding-top: 10px; border-top: 1px solid #e2e8f0; color: #667085; font-size: 11px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1><span class="mark">RJ</span>申请助手</h1>
+  <p id="jobLine">—</p>
+  <div class="status busy" id="statusBox">
+    <span class="spinner" id="statusIcon"></span>
+    <span class="word" id="statusWord">正在连接</span>
+  </div>
+  <p id="detail" role="status" aria-live="polite"></p>
+  <section id="questions" aria-label="新问题">
+    <h2>发现新问题</h2>
+    <div id="questionList"></div>
+    <button class="primary" id="saveAnswers">保存并填写</button>
+  </section>
+  <button class="primary" id="primaryAction" hidden></button>
+  <footer>只填写你确认过的安全信息。登录、验证码、敏感问题、附件和最终提交都由你自己完成。</footer>
+  <script src="popup.js"></script>
+</body>
+</html>
