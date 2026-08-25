@@ -65,8 +65,8 @@ API Key，不配置也能完整使用产品。
 - Chrome 或 Microsoft Edge（用于浏览器辅助和本机端到端演示）
 
 ```bash
-git clone https://github.com/Kerrylala/resume-jobs-quick-apply.git
-cd resume-jobs-quick-apply
+git clone https://github.com/Kerrylala/resume_jobs_quick_apply.git
+cd resume_jobs_quick_apply
 npm install
 npm start
 ```

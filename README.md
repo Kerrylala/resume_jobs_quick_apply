@@ -83,8 +83,8 @@ Requirements:
 - Chrome or Microsoft Edge for browser assistance and the localhost E2E demo
 
 ```bash
-git clone https://github.com/Kerrylala/resume-jobs-quick-apply.git
-cd resume-jobs-quick-apply
+git clone https://github.com/Kerrylala/resume_jobs_quick_apply.git
+cd resume_jobs_quick_apply
 npm install
 npm start
 ```

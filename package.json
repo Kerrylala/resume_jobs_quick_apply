@@ -6,12 +6,12 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kerrylala/resume-jobs-quick-apply.git"
+    "url": "https://github.com/Kerrylala/resume_jobs_quick_apply.git"
   },
   "bugs": {
-    "url": "https://github.com/Kerrylala/resume-jobs-quick-apply/issues"
+    "url": "https://github.com/Kerrylala/resume_jobs_quick_apply/issues"
   },
-  "homepage": "https://github.com/Kerrylala/resume-jobs-quick-apply#readme",
+  "homepage": "https://github.com/Kerrylala/resume_jobs_quick_apply#readme",
   "keywords": [
     "job-application",
     "local-first",
