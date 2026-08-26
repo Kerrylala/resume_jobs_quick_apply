@@ -1,0 +1,207 @@
+# Launch post drafts
+
+> Ready-to-paste drafts for the initial promotion round. Each platform has its
+> own culture — do not cross-post the same text. Post from your own account,
+> stay in the thread for the first day, and treat every hard question as free
+> product feedback. Never ask friends to upvote (Hacker News and Reddit both
+> detect and punish this).
+>
+> Suggested order: V2EX → Reddit r/localllama → Reddit r/SideProject →
+> Hacker News Show HN. One platform every 1–2 days; fix anything the previous
+> round surfaced before the next post.
+
+---
+
+## 1. V2EX —「分享创造」节点
+
+**标题:**
+
+> 开源了一个本地优先的 AI 求职助手:全网搜岗、可解释匹配、绝不编造事实的简历定制、自动填表——提交永远自己点
+
+**正文:**
+
+秋招网申填表填到麻的兄弟应该懂:同样的问题答几十遍,每个门户一套表单,AI 改简历
+又怕它瞎编。我做了一个开源工具,把这些脏活接过来,但把所有关键决定留给人:
+
+- **全网搜岗**:公司招聘页 + 公开 ATS(Greenhouse / Lever / Ashby 等),也能直接
+  粘贴岗位链接导入;
+- **可解释匹配**:每个分数拆成技能/经验/学历/地点/资历五个维度,差距点名说,
+  不是给你一个神秘的「93% 匹配」;
+- **简历/求职信定制,句句有出处**:生成的每句话必须能追溯到你确认过的资料。AI
+  编造技能、数字、雇主,整份输出直接拒收,回退到确定性版本——这是代码强制的,
+  不是提示词求出来的;
+- **自动填表**:支持分步向导表单,可以用 Chrome 扩展在你自己的浏览器里填,或者
+  开一个可见的专用浏览器。回答过的问题确认后会记住,下次自动复用;
+- **本地优先**:简历、资料、历史全是你机器上的本地文件。AI 可选,接 LM Studio /
+  Ollama 本地模型或自己的 API Key;
+- **红线**:绝不自动点提交,绝不碰登录/验证码/MFA。这是设计,不是没做完。
+
+技术上是纯 Node.js,无构建步骤,460+ 条离线测试把包括安全规则在内的行为全钉住了。
+`npm run demo` 有一个完全合成、完全离线的演示(假候选人假岗位假表单)。
+
+仓库:https://github.com/Kerrylala/resume_jobs_quick_apply
+README 有 22 秒的 GIF 演示。中英文文档都全。
+
+目前的坑也如实说:Workday 只能发现不能填;页面角标和扩展弹窗暂时只有中文;
+简历定制质量取决于你接的模型。欢迎试用拍砖,issue 中英文都收。
+
+**发帖注意:**
+- 节点选「分享创造」;
+- 首楼贴 GIF(直接贴 raw.githubusercontent.com 的 demo.gif 链接);
+- 有人质疑「又一个 AI 套壳」时,把接地校验的机制讲清楚(整体拒收 + 确定性回退 +
+  测试钉住),这是和套壳的本质区别;
+- 当天每条回复都回,第二天再回一轮。
+
+---
+
+## 2. Reddit — r/localllama
+
+**Title:**
+
+> I built a local-first job application agent that runs on LM Studio/Ollama — and rejects any AI output that invents resume facts
+
+**Body:**
+
+Job hunting means answering the same questions on dozens of ATS portals, and I
+didn't want to hand my resume and work history to yet another cloud service —
+or let an LLM "improve" my resume by inventing skills I don't have.
+
+So I built this: a local Node.js dashboard that finds jobs across public
+career pages, scores each match with an explainable per-dimension breakdown,
+tailors a resume/cover letter, and autofills applications — with a hard rule
+that the final Submit click is always mine.
+
+The parts this sub might care about:
+
+- **Local models are first-class**: LM Studio and Ollama are auto-detected;
+  any OpenAI-compatible endpoint works. No cloud account, no telemetry.
+- **Grounding is enforced by code, not prompts**: every sentence in a
+  generated resume/letter must trace to a fact in your approved profile. If
+  the model invents a skill, number, or employer, the whole output is rejected
+  and a deterministic fallback is used. This survived an adversarial review
+  pass and is pinned by tests (including full-width digits and CJK edge
+  cases, since the app is bilingual EN/中文).
+- **AI is optional**: the deterministic product (search, matching, autofill,
+  answer memory) is complete without any model. The LLM only adds fluency and
+  a clearly-labeled semantic opinion on match scores — it can never push a job
+  past a failed hard filter.
+- **460+ offline tests** pin the behavior, including the safety rules (never
+  clicks Submit, never touches login/CAPTCHA/MFA).
+
+`npm run demo` runs a fully synthetic offline walkthrough (fake candidate,
+fake jobs, fake form on localhost) so you can see the whole flow without
+touching anything real.
+
+Repo: https://github.com/Kerrylala/resume_jobs_quick_apply (MIT)
+
+Honest limitations: Workday is discovery-only, the page-side helper chip is
+Chinese-only for now, and tailoring quality depends on the model you bring.
+Curious what local models people would reach for here — I've mostly tested
+with mid-size instruct models.
+
+**发帖注意:**
+- Flair 选 "Resources" 或该 sub 当前的项目分享 flair;
+- 结尾那个开放问题(哪个本地模型合适)是真问题,也让帖子不像纯广告;
+- 有人问模型效果时,如实说测试过什么、没测过什么。
+
+---
+
+## 3. Reddit — r/SideProject
+
+**Title:**
+
+> I got tired of job application forms, so I built a local AI assistant that fills them — but never clicks Submit
+
+**Body:**
+
+Every job portal asks the same 30 questions. Every "AI resume tool" wants my
+data on their server and happily invents skills I don't have. So I spent the
+last months building the opposite:
+
+**Resume Jobs AI** — a local-first job application assistant. Everything runs
+on your machine:
+
+- finds jobs on public career pages and ATS boards, or imports any job URL;
+- explains every match score dimension by dimension, names the real gaps;
+- tailors your resume and cover letter with a hard grounding rule: any AI
+  output that invents a fact is rejected wholesale;
+- autofills applications (multi-step wizards included) via a Chrome extension
+  or a visible dedicated browser;
+- remembers your confirmed answers and reuses them next time;
+- **never** clicks Submit, never logs in, never touches CAPTCHAs. You stay
+  the human in the loop.
+
+AI is optional — plug in LM Studio/Ollama or your own API key, or run it
+fully deterministic. MIT licensed, no cloud, no telemetry, 460+ offline
+tests.
+
+22-second demo GIF in the README, and `npm run demo` gives you a fully
+synthetic offline walkthrough.
+
+https://github.com/Kerrylala/resume_jobs_quick_apply
+
+Would love feedback — especially from anyone mid-job-hunt right now.
+
+**发帖注意:**
+- r/SideProject 允许直接推广,但发布前看一眼当前置顶规则;
+- 也可考虑 r/opensource(规则更严,标题要弱化推广感)。
+
+---
+
+## 4. Hacker News — Show HN
+
+**Title(80 字符内,已核):**
+
+> Show HN: A local-first job application agent that can't invent resume facts
+
+**URL:** https://github.com/Kerrylala/resume_jobs_quick_apply
+
+**首评(提交后立刻自己评论,这是 Show HN 的惯例):**
+
+Hi HN — I built this while watching "AI job apply" tools do two things I
+didn't want: hold my resume and history on their servers, and let an LLM
+freely rewrite my resume, invented skills included.
+
+Resume Jobs is a local Node.js app (no build step, MIT) that searches public
+career pages and ATS boards, scores each job with an explainable
+per-dimension breakdown, tailors a resume/cover letter, and autofills
+applications — while the final Submit is always a human click.
+
+The technically interesting part is the grounding layer: every sentence of
+generated output must trace to a fact in the user's approved profile. A
+claim that doesn't — an invented skill, a number that appears nowhere, an
+employer never mentioned — rejects the entire output and falls back to a
+deterministic version. "Can't invent" in the title means enforced by
+validation code and ~460 offline tests, not by prompt engineering. Getting
+this right for bilingual (English/Chinese) content was most of the fun:
+full-width digits, CJK substring matching, and proper-noun edge cases all
+needed their own rules.
+
+Safety boundaries are hard-coded the same way: it never clicks Submit, never
+logs in, never touches CAPTCHA/MFA, and the Chrome extension only ever talks
+to 127.0.0.1 — page URLs leave a tab only for hosts with an active fill
+session the user started.
+
+Honest limitations: Workday is discovery-only; the page-side helper chip is
+currently Chinese-only; tailoring quality depends on the model you bring
+(local via LM Studio/Ollama, or your own API key — AI is optional and off by
+default).
+
+`npm run demo` runs a fully synthetic offline demo. I'd genuinely like to
+hear where the grounding validation can be beaten — adversarial reviews
+found and fixed several bypasses already, and I doubt they were the last.
+
+**发帖注意:**
+- 美东工作日早上 8–10 点提交(北京时间晚 8–10 点);
+- 绝不拉人点赞,绝不用小号顶帖;
+- HN 用户会真的去读 SECURITY.md 和代码,回答问题时指向具体文件和测试最有说服力;
+- 没上首页很正常,可以在下一次大版本时再 Show HN 一次(HN 允许间隔后重发)。
+
+---
+
+## 通用红线
+
+- 所有帖子由你本人的账号发布;
+- 演示素材只用仓库里已有的合成截图/GIF,绝不现场用真实资料录屏;
+- 不承诺没有的功能;被问到没做的就说在 Roadmap 或不在边界内;
+- 发布首日守帖回复;所有质疑先当成产品反馈记 issue。

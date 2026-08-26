@@ -68,6 +68,8 @@ behavior:
   GitHub Release notes for `v1.0.0-rc.1` (honest what-works / limitations).
 - [release/GITHUB_TOPICS.md](release/GITHUB_TOPICS.md) — recommended GitHub
   topics and About description.
+- [release/LAUNCH_POSTS.md](release/LAUNCH_POSTS.md) — ready-to-paste launch
+  post drafts for V2EX, Reddit, and Hacker News.
 - [demo/DEMO_SCRIPT.md](demo/DEMO_SCRIPT.md) — demo GIF shot list, timings,
   and safe-recording setup.
 - [release/RELEASE_CANDIDATE_HANDOFF.md](release/RELEASE_CANDIDATE_HANDOFF.md) — 1.0.0-rc.1 frozen handoff.

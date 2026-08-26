@@ -4,6 +4,7 @@
 > resume that **never invents facts**, and autofill the application — all on
 > your own machine, with **you** clicking Submit.
 
+[![Tests](https://github.com/Kerrylala/resume_jobs_quick_apply/actions/workflows/tests.yml/badge.svg)](https://github.com/Kerrylala/resume_jobs_quick_apply/actions/workflows/tests.yml)
 [![Node.js 18+](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 ![Release](https://img.shields.io/badge/release-1.0.0--rc.1-3157d5)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0f766e.svg)](LICENSE)

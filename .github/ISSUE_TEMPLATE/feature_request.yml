@@ -1,0 +1,30 @@
+name: "Feature request / 功能建议"
+description: "Suggest an improvement or a new capability. 提出改进或新功能。"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English or Chinese are both fine. 中文或英文都可以。
+        Note: features that auto-click Submit, bypass login/CAPTCHA, or invent
+        resume content are out of scope by design.
+        注意:自动点提交、绕过登录/验证码、编造简历内容的功能不在产品边界内,这是设计决定。
+  - type: textarea
+    id: problem
+    attributes:
+      label: "What problem would this solve? / 想解决什么问题?"
+      description: "Describe the situation where the current product falls short. 描述现在产品不够用的场景。"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "What would you like to see? / 希望它长什么样?"
+      description: "A rough idea is enough. 有个大概想法就行。"
+    validations:
+      required: true
+  - type: input
+    id: ats
+    attributes:
+      label: "Related job portal / ATS (if any) / 相关招聘门户(如有)"
+      placeholder: "e.g. Workday, BOSS直聘, SuccessFactors…"

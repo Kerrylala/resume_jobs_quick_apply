@@ -12,14 +12,6 @@
     "url": "https://github.com/Kerrylala/resume_jobs_quick_apply/issues"
   },
   "homepage": "https://github.com/Kerrylala/resume_jobs_quick_apply#readme",
-  "keywords": [
-    "job-application",
-    "local-first",
-    "resume",
-    "ai-assistant",
-    "playwright",
-    "chrome-extension"
-  ],
   "engines": {
     "node": ">=18"
   },
@@ -73,11 +65,15 @@
   },
   "keywords": [
     "job-search",
+    "job-application",
     "resume",
     "autofill",
     "career",
     "local-first",
-    "ai-agent"
+    "ai-assistant",
+    "ai-agent",
+    "playwright",
+    "chrome-extension"
   ],
   "dependencies": {
     "pdfjs-dist": "^4.8.69",

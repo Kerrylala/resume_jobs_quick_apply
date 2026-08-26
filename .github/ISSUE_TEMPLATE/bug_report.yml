@@ -1,0 +1,50 @@
+name: "Bug report / 报告问题"
+description: "Something broke or behaved unexpectedly. 功能出错或行为不符合预期。"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report! English or Chinese are both fine.
+        感谢反馈!中文或英文都可以。
+        **Please never paste your real resume, contact details, or any personal data.**
+        **请不要粘贴真实简历、联系方式或任何个人数据。**
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "What happened? / 发生了什么?"
+      description: "What did you do, what did you expect, what happened instead? 操作步骤、预期结果、实际结果。"
+      placeholder: |
+        1. Uploaded a resume on the Profile page…
+        2. Clicked "Find jobs from my profile"…
+        3. Expected …, but got …
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment / 环境"
+      description: "OS, Node.js version (`node -v`), browser, and how you run it (npm start / launcher). 操作系统、Node 版本、浏览器、启动方式。"
+      placeholder: "Windows 11, Node 20.11, Chrome 128, npm start"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Which part? / 哪个部分?"
+      options:
+        - "Job discovery & matching / 岗位搜索与匹配"
+        - "Resume upload & parsing / 简历上传与解析"
+        - "Tailored resume & cover letter / 定制简历与求职信"
+        - "Autofill — extension / 扩展填写"
+        - "Autofill — product browser / 产品浏览器填写"
+        - "Dashboard UI / 控制台界面"
+        - "Install & startup / 安装与启动"
+        - "Other / 其他"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs or screenshots / 日志或截图"
+      description: "Console output or a screenshot helps a lot — redact anything personal first. 控制台输出或截图很有帮助——先抹掉个人信息。"

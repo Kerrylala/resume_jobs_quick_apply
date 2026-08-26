@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Product tour / 产品导览
+    url: https://github.com/Kerrylala/resume_jobs_quick_apply/blob/main/docs/user/PRODUCT_TOUR.md
+    about: How the product works end to end. 先看这里了解产品全流程。
+  - name: Security policy / 安全策略
+    url: https://github.com/Kerrylala/resume_jobs_quick_apply/blob/main/SECURITY.md
+    about: Please report security issues privately, not as public issues. 安全问题请走私下渠道,不要公开提 issue。

@@ -3,6 +3,7 @@
 > 全网找岗位、每个匹配都**讲得清理由**、定制简历**绝不编造事实**、申请表自动填写——
 > 一切都在你自己的电脑上,最后一步永远由**你**点提交。
 
+[![Tests](https://github.com/Kerrylala/resume_jobs_quick_apply/actions/workflows/tests.yml/badge.svg)](https://github.com/Kerrylala/resume_jobs_quick_apply/actions/workflows/tests.yml)
 [![Node.js 18+](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 ![Release](https://img.shields.io/badge/release-1.0.0--rc.1-3157d5)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0f766e.svg)](LICENSE)
