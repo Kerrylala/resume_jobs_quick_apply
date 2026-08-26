@@ -65,3 +65,6 @@ browser_runtime/
 /PUBLIC_SOURCE_MANIFEST.md
 docs/history/
 docs/goal_modes/
+
+# Internal launch/promotion collateral (not product documentation)
+docs/release/LAUNCH_POSTS.md
