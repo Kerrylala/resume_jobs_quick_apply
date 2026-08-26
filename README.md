@@ -11,12 +11,10 @@
 
 **English** · [简体中文](README.zh-CN.md)
 
-![Job matches with explainable scores](docs/images/jobs.png)
+![Product demo: profile → scored matches → tailored resume → prepare application](docs/images/demo.gif)
 
-*The in-app UI is titled **Quick Apply** — same product, shorter name.*
-
-<!-- demo-gif: replace the image above with docs/images/demo.gif once recorded.
-     Shot list and timings: docs/demo/DEMO_SCRIPT.md -->
+*22-second tour with a synthetic candidate and fictional employers. The in-app
+UI is titled **Quick Apply** — same product, shorter name.*
 
 ## Try it in two minutes
 
@@ -86,6 +84,8 @@ Every screenshot uses a synthetic candidate and fictional employers.
 | Your profile is the single source of truth | Every job keeps its receipts |
 |---|---|
 | ![My Profile](docs/images/profile.png) | ![Job detail with provenance](docs/images/job-detail.png) |
+| **Scored, filtered job list** | |
+| ![Job list](docs/images/jobs.png) | |
 
 Target roles, education, experience, projects, and skills are versioned and
 editable, and they drive matching, the tailored resume, and search. Each job

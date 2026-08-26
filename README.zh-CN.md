@@ -10,12 +10,10 @@
 
 [English](README.md) · **简体中文**
 
-![带可解释匹配分的岗位列表](docs/images/jobs.zh.png)
+![产品演示:资料 → 匹配评分 → 定制简历 → 申请准备](docs/images/demo.gif)
 
-*产品界面里的名字是 **Quick Apply**——同一个产品,只是名字更短。*
-
-<!-- demo-gif: 录好后把上面这张图换成 docs/images/demo.gif。
-     分镜与时长见 docs/demo/DEMO_SCRIPT.md -->
+*22 秒演示,全程使用合成候选人与虚构公司。产品界面里的名字是
+**Quick Apply**——同一个产品,只是名字更短。*
 
 ## 两分钟试一试
 
@@ -79,6 +77,8 @@ npm start
 | 你的资料是唯一事实来源 | 每个匹配都能自证来历 |
 |---|---|
 | ![我的资料](docs/images/profile.zh.png) | ![岗位详情与来源](docs/images/job-detail.zh.png) |
+| **带评分与筛选的岗位列表** | |
+| ![岗位列表](docs/images/jobs.zh.png) | |
 
 求职方向、教育、经历、项目与技能都带版本、可编辑,并直接驱动匹配、定制简历和
 搜索。每个岗位都保留它的来历证据——来源、查询词、发现时间、原始链接。与应届生
