@@ -1,8 +1,8 @@
 # Resume Jobs AI
 
-> A local-first AI job application agent that turns approved job matches into
-> review-ready application packages while keeping personal facts, risky
-> answers, browser actions, and final submission under your control.
+> Find jobs across the web, see exactly **why** each one matches you, generate a
+> resume that **never invents facts**, and autofill the application — all on
+> your own machine, with **you** clicking Submit.
 
 [![Node.js 18+](https://img.shields.io/badge/Node.js-18%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 ![Release](https://img.shields.io/badge/release-1.0.0--rc.1-3157d5)
@@ -13,74 +13,59 @@
 
 ![Job matches with explainable scores](docs/images/jobs.png)
 
-Resume Jobs helps one person build a versioned **Career Brain**, search China
-and global opportunities, understand deterministic and semantic match quality,
-build an Application Package, and fill known fields with either the included
-browser extension or the optional visible Local Browser Agent.
+*The in-app UI is titled **Quick Apply** — same product, shorter name.*
 
-The product's north-star metric is **Application Completion Rate**: the share
-of an approved application that can be completed safely before the user takes
-over.
+<!-- demo-gif: replace the image above with docs/images/demo.gif once recorded.
+     Shot list and timings: docs/demo/DEMO_SCRIPT.md -->
 
-## Product capabilities
+## Try it in two minutes
 
-- **Resume Intelligence** imports versioned PDF, DOCX, and UTF-8 TXT resumes,
-  extracts review-only facts, and records provenance and confidence.
-- **Career Brain** keeps approved, versioned identity, education, experience,
-  projects, grouped skills, languages, preferences, career goals, and interview
-  stories as the product's primary candidate knowledge model.
-- **Candidate-aware matching** evaluates technical fit, experience,
-  education, location, salary, and career direction without inventing missing
-  facts.
-- **Job Discovery Agent** derives direct and evidence-backed transferable roles,
-  shows target/adjacent roles, locations, keywords, sources and query reasons
-  before execution, and supports SearXNG, direct public application/company
-  URLs, and a
-  fully synthetic localhost demo.
-- **Hybrid matching** combines authoritative deterministic gates with advisory
-  semantic score, strengths, gaps and confidence, then separates immediate fit,
-  career-growth value, skill gaps, and Apply/Consider/Do-not-apply guidance.
-- **Answer Memory** versions user-confirmed answers; model suggestions remain
-  unconfirmed until reviewed.
-- **Form Field Memory** learns de-valued field mappings and reuses only mappings
-  the user confirmed.
-- **Application Package 2.0** binds one approved job to the approved Career
-  Profile, best eligible resume, confirmed answers, cover-letter state,
-  interview preparation, risks, safety gates, and a completion estimate.
-- **Two safe Application Executors** use the same package, field mapper, portal
-  adapters, safety policy, and report: the Chrome Extension is the recommended
-  daily mode; the optional Local Browser Agent opens a visible dedicated Chrome
-  session for advanced diagnostics. Both stop for login, CAPTCHA, MFA, unknown
-  or sensitive questions, resume attachment, and final submission.
-- **Optional AI providers** support a local OpenAI-compatible endpoint, OpenAI,
-  Anthropic, or another HTTPS OpenAI-compatible endpoint. AI remains advisory;
-  deterministic code owns scores, approval, and workflow state.
+```bash
+git clone https://github.com/Kerrylala/resume_jobs_quick_apply.git
+cd resume_jobs_quick_apply
+npm install && npm run demo
+```
 
-## Product preview
+The demo is fully synthetic and offline: fake candidate, fake jobs, a fake
+application form on localhost. Nothing real is read, contacted, or submitted.
 
-Every screenshot below uses a synthetic candidate and fictional employers.
+## What it does
 
-| Your profile is the single source of truth | Every match explains itself |
+- **Web-wide job discovery** — searches company career pages and public
+  applicant-tracking-system (ATS) job boards, or imports any public job URL
+  you paste.
+- **Explainable matching** — every score decomposes into skills, experience,
+  education, location, and seniority. A genuine gap is named, never hidden.
+- **Grounded resume & cover-letter tailoring** — generated documents may only
+  say what your approved profile actually contains. AI output that invents a
+  skill, number, or employer is rejected wholesale and falls back to a
+  deterministic version.
+- **Application autofill** — fills the fields you confirmed, across multi-step
+  forms, in your own browser (extension) or a visible dedicated one.
+- **Answer memory** — a question you answer once is remembered with your
+  approval and reused on the next application that asks it.
+- **Local-first** — your resume, profile, answers, and history are local files.
+  AI is optional: bring a local model (LM Studio / Ollama) or your own API key.
+- **You submit** — the product never clicks Submit, never logs in, never
+  touches CAPTCHA or multi-factor (MFA) prompts.
+
+## Why Resume Jobs?
+
+Most auto-apply tools are cloud services that rewrite your resume freely and
+fire applications you never saw. This project takes the opposite side of every
+one of those trades:
+
+| Typical auto-apply bot | Resume Jobs |
 |---|---|
-| ![My Profile](docs/images/profile.png) | ![Job detail with provenance](docs/images/job-detail.png) |
-
-**Target roles**, education, experience, projects, and skills are versioned and
-editable, and they drive matching, the tailored resume summary, and search. Each
-job keeps the evidence of where it came from — source, query, discovery time,
-and original link — so a recommendation is never a context-free number. In the
-list above, the senior role scoring 41 is filtered out of **Recommended** for an
-early-career profile instead of being quietly dropped.
-
-AI is optional: [Settings](docs/images/settings.png) lets you point the product
-at a local model or your own API key, and the product works fully without one.
+| Your resume and history live on someone's server | Everything is a local file on your machine |
+| "93% match" with no reasoning | Score broken down by dimension, with named gaps |
+| LLM freely rewrites your resume — invented skills included | Facts-only tailoring: ungrounded output is rejected in full, enforced by code and tests |
+| Answers the same questions from scratch every time | Confirmed answers are versioned and reused |
+| Submits on your behalf | Stops at every login, CAPTCHA, sensitive question — and always at Submit |
 
 ## Quick start
 
-Requirements:
-
-- Windows 11, macOS, or Linux
-- Node.js 18 or newer
-- Chrome or Microsoft Edge for browser assistance and the localhost E2E demo
+Requirements: Windows 11 / macOS / Linux, Node.js 18+, Chrome or Edge.
 
 ```bash
 git clone https://github.com/Kerrylala/resume_jobs_quick_apply.git
@@ -89,203 +74,115 @@ npm install
 npm start
 ```
 
-Open [http://127.0.0.1:8767](http://127.0.0.1:8767).
+Open [http://127.0.0.1:8767](http://127.0.0.1:8767), upload a resume, review
+what was parsed, and click **Find jobs from my profile**. Windows users can
+double-click `dist/ResumeJobs Launcher.cmd` instead. Full first-run
+walkthrough: [quick_start.md](docs/user/quick_start.md).
 
-Windows users can double-click `dist/ResumeJobs Launcher.cmd`. See
-[quick_start.md](docs/user/quick_start.md) for the complete first-run walkthrough and
-desktop shortcut instructions.
+## Screenshots
 
-## First-use workflow
+Every screenshot uses a synthetic candidate and fictional employers.
 
-```text
-Upload Resume
-  -> AI-assisted Career Brain draft
-  -> Review, version, and approve Career Profile
-  -> Create Job Search
-  -> Find jobs or import one public job URL
-  -> Review explainable matches
-  -> Approve selected jobs
-  -> Build and review Application Package
-  -> Approve AI Fill
-  -> Open the application and use AI Fill Assistant
-  -> Resolve unknown, sensitive, login, CAPTCHA, or MFA steps
-  -> Review the completed form
-  -> Submit manually
-```
+| Your profile is the single source of truth | Every job keeps its receipts |
+|---|---|
+| ![My Profile](docs/images/profile.png) | ![Job detail with provenance](docs/images/job-detail.png) |
 
-Workflow steps are derived from current domain records. Browser cache, demo
-flags, and old reports do not decide the current step.
+Target roles, education, experience, projects, and skills are versioned and
+editable, and they drive matching, the tailored resume, and search. Each job
+keeps the evidence of where it came from — source, query, discovery time,
+original link. A senior role that fits an early-career profile poorly is kept
+out of **Recommended** instead of being quietly dropped.
 
-## Daily use
+## AI providers
 
-The Home view is the daily starting point. It summarizes Career Brain
-readiness, the highest-scoring jobs that still need review, applications in
-progress, and the safest next action. Match cards keep discovery evidence
-(source category, query, search time, discovery reason, and provider) beside
-the fit explanation, so a recommendation is never a context-free score.
+AI is optional and off by default — the deterministic product is complete
+without it. When you enable it ([Settings](docs/images/settings.png)), point it
+at:
 
-Discovery sources use one visible taxonomy:
+- a **local model** via LM Studio or Ollama (auto-detected), or
+- **your own API key** for OpenAI, Anthropic, or any OpenAI-compatible HTTPS
+  endpoint.
 
-- China: company career sites, public job pages, and user-imported URLs.
-- Global: public application forms and company career pages.
+Tailoring, cover-letter, and matching requests carry only the job posting and
+the specific confirmed facts each task needs — never your contact details.
+Enabling AI at resume upload sends the resume text you chose to upload to the
+provider **you** configured, and nowhere else. Keys never leave your machine.
+Deterministic checks own every gate and approval: when AI is on, match scores
+blend in a clearly labeled semantic opinion, but it can never lift a job past
+a failed hard filter, approve a job, or advance an application.
 
-Application Package review shows the selected resume version, cover-letter
-state and preview, prepared interview questions, confirmed STAR stories,
-missing skills, and unresolved risk before browser assistance can begin.
-
-## Try the complete offline demo
-
-```bash
-npm run demo
-```
-
-The demo uses synthetic data, an isolated temporary directory, and a local fake
-application form. It does not read your personal profile, contact a real job site,
-upload a resume, or submit an application.
-
-## Browser extension
-
-Load `extensions/application_assistant` as an unpacked Manifest V3 extension.
-It runs on public application pages — including company-hosted careers domains,
-not just the big ATS vendors — and stays dormant until you start a fill.
-
-**A page's URL reaches the local app only when its host belongs to an active
-fill session.** The extension asks the app which hosts are active (a request
-that carries no page information at all) and stays silent everywhere else, so
-ordinary browsing is never reported anywhere.
-
-After **Start AI Fill Assistant**, the popup receives the reviewed application
-setup only when the open page belongs to the selected job. It receives no resume
-file bytes or final-submit permission. Resume attachment remains a separate,
-explicitly confirmed manual action.
-
-On the page itself, the Assistant shows a small chip with the live application
-state plus two buttons: **Fill this step** and **Re-scan now**, for the moments
-you do not want to wait for the automatic cycle.
-
-Use **Settings → Extension Connection** to verify the installed extension,
-connection, current page, and matched application. Technical transport details
-and identifiers are available only under **Advanced diagnostics**. Resume Jobs
-uses localhost HTTP and does not require Native Messaging.
-
-## Application Executor modes
-
-Choose the executor while reviewing an approved Application Package:
-
-- **Chrome Extension (recommended)** opens the exact approved URL in your
-  normal browser. The popup displays company, role, simple readiness state,
-  detected/filled/skipped counts, and fields that need review.
-- **Local Browser Agent (advanced)** launches a visible Chrome/Edge window with
-  a dedicated ignored profile. It takes before/after screenshots, writes a
-  redacted execution report, fills the same safe fields, and pauses with the
-  browser open for review.
-
-Multi-step applications are supported in both modes: when a portal walks you
-through several pages, each new step is detected, allowed to settle, and filled
-once with your confirmed answers. Navigation stays yours — the product never
-clicks **Next**, **Save & Continue**, or **Submit**.
-
-The modes are not separate products. Both consume the same reviewed Application
-Package, follow the same safety rules, and return the same redacted result. See the
-[Extension guide](docs/user/EXTENSION_GUIDE.md) and
-[Browser Agent guide](docs/user/BROWSER_AGENT_GUIDE.md).
-
-## Safety model
+## Safety & privacy
 
 Resume Jobs is not an unattended auto-submit bot.
 
-- Final Submit is never clicked automatically.
-- Login, CAPTCHA, MFA, and verification stop for the user.
-- Application Executor never uploads or receives resume bytes.
-- Sensitive and high-risk answers require confirmation.
-- AI cannot change deterministic scores, approve a job, or advance an
-  application state.
-- Real-site access, login, resume upload, and submission require explicit user
-  authorization.
+- Final Submit is never clicked automatically; login, CAPTCHA, MFA, and
+  verifications always stop for you.
+- Sensitive and high-risk answers require your explicit confirmation.
+- Generated resumes and letters are grounded: every claim traces to a fact you
+  approved.
+- All personal data stays in local files that Git ignores; cloning this repo
+  can never carry anyone's candidate data.
+- Destructive actions archive first — **Delete all user data** copies every
+  store into `archive/` before wiping.
 
-Read [SECURITY.md](SECURITY.md) before using browser assistance on a real
-application.
+Details and threat model: [SECURITY.md](SECURITY.md).
 
-## Your data stays on your machine
+## Architecture in one paragraph
 
-- Everything you enter — resumes, profile facts, answers, applications,
-  browser sessions — is written to local files under `data/`, `documents/`,
-  and `browser_profiles/`. Nothing is uploaded anywhere.
-- Those directories are excluded from Git, so cloning or forking this
-  repository never carries anyone's candidate data.
-- AI is optional and off by default. When you enable it, only the job posting
-  and the specific facts a task needs are sent to the provider **you**
-  configure (a local model, or your own API key). Contact details are never
-  part of an AI request.
-- Destructive actions archive first: **Delete all user data** copies every
-  store into `archive/` before wiping, so a misclick is recoverable.
+A local Node.js dashboard (no build step) owns all state as versioned JSON
+files and serves a bilingual web UI. Matching, resume parsing, tailoring, and
+search planning are deterministic modules with AI as an optional, validated
+layer on top. Two interchangeable fill executors — a Chrome extension and a
+visible Playwright-driven browser — share one field-mapping, safety-policy, and
+reporting contract. ~460 offline tests pin the behavior, including the safety
+rules. Deep dive: [Architecture](docs/architecture/ARCHITECTURE.md) ·
+[Product tour](docs/user/PRODUCT_TOUR.md).
 
-## Project structure
+## Roadmap
 
-```text
-dashboard/                   Local Dashboard and HTTP API
-application_executor/        Shared mapping, safety, executor, and report contract
-portal_adapters/             Lever, Greenhouse, Ashby, and generic adapters
-browser_agent/               Optional visible Playwright transport
-extensions/application_assistant/
-                             AI Fill Assistant and Form Field Memory
-providers/                   Public job-source and provider detectors
-scripts/lib/                 Product domain and persistence modules
-scripts/                     CLI, launcher, discovery, scoring, and package tools
-tests/                       Offline unit, integration, browser, and E2E tests
-mock_sites/                  Localhost-only ATS fixtures
-data/                        Local runtime state; private data is ignored
-```
+- **Now** — explainable search & matching, grounded tailoring (experimental
+  label in UI), multi-step autofill, answer memory, bilingual UI and docs.
+- **Next** — demo video, broader ATS coverage and field-widget support,
+  packaged one-click install, richer cover-letter styles.
+- **Later** — multiple profiles, pluggable job sources, community field
+  mappings.
 
-## Development and validation
+## Current limitations
 
-```bash
-npm run validate
-npm test
-npm run test:e2e
-npm run test:browser
-npm run test:browser-agent
-npm run test:browser-agent-dashboard
-npm run test:launcher
-npm run test:real-portals
-```
+Honest notes before you rely on it:
 
-The default suite installs a network and project-write guard. Tests use
-synthetic inputs and temporary data roots; they do not read or rewrite formal
-job, profile, resume, or application data.
+- Some portals require login or human verification mid-flow — the product
+  stops and waits for you; it will not try to get past them.
+- ATS coverage varies: Greenhouse, Lever, and Ashby are first-class; Workday is
+  discovery-only; unusual custom widgets may need manual filling.
+- Job discovery depends on public sources being reachable; login-walled boards
+  are surfaced as leads rather than full postings.
+- Resume tailoring is marked **experimental** in the UI: quality depends on the
+  AI model you bring, and the grounded fallback is plainer prose.
+- The dashboard is bilingual (English/Chinese), but the page-side Assistant
+  chip and the extension popup are currently Chinese-only.
+- Developed and tested most heavily on Windows; macOS/Linux get the same
+  offline test suite but less real-world mileage.
+- Final submission is always manual — by design, not as a missing feature.
 
-`npm run test:real-portals` is intentionally separate from the offline suite.
-It performs a read-only check of current public Greenhouse and Lever form-field
-contracts and never writes values, uploads a resume, logs in, or submits.
+## Documentation & contributing
 
-## Documentation
+[Product tour](docs/user/PRODUCT_TOUR.md) ·
+[Quick start](docs/user/quick_start.md) ·
+[User guide](docs/user/USER_GUIDE_EN.md) ·
+[Extension guide](docs/user/EXTENSION_GUIDE.md) ·
+[Browser Agent guide](docs/user/BROWSER_AGENT_GUIDE.md) ·
+[Architecture](docs/architecture/ARCHITECTURE.md) ·
+[AI provider contract](docs/developer/AI_PROVIDER.md) ·
+[Docs index](docs/INDEX.md)
 
-- [简体中文说明](README.zh-CN.md) · [中文贡献指南](CONTRIBUTING.zh-CN.md) ·
-  [中文安全与隐私](SECURITY.zh-CN.md) · [中文更新日志](CHANGELOG.zh-CN.md)
-- [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
-- [Documentation index](docs/INDEX.md)
-- [Quick start](docs/user/quick_start.md)
-- [中文用户指南](docs/user/USER_GUIDE_CN.md)
-- [English user guide](docs/user/USER_GUIDE_EN.md)
-- [中文安装指南](docs/user/中文安装指南.md)
-- [中文运行指南](docs/user/中文运行指南.md)
-- [Developer guide](docs/developer/DEVELOPER_GUIDE.md)
-- [Architecture](docs/architecture/ARCHITECTURE.md)
-- [Application Executor user guide](docs/user/USER_GUIDE.md)
-- [Chrome Extension guide](docs/user/EXTENSION_GUIDE.md)
-- [Local Browser Agent guide](docs/user/BROWSER_AGENT_GUIDE.md)
-- [Extension architecture](docs/architecture/EXTENSION_ARCHITECTURE.md)
-- [AI provider contract](docs/developer/AI_PROVIDER.md)
-- [Security policy](SECURITY.md)
-- [Release checklist](docs/release/RELEASE_CHECKLIST.md)
+中文文档: [README](README.zh-CN.md) · [贡献指南](CONTRIBUTING.zh-CN.md) ·
+[安全与隐私](SECURITY.zh-CN.md) · [更新日志](CHANGELOG.zh-CN.md) ·
+[用户指南](docs/user/USER_GUIDE_CN.md)
 
-## Release status
-
-`1.0.0-rc.1` uses a shared Application Executor contract for Extension and
-Local Browser Agent modes, with Lever, Greenhouse, Ashby, and generic adapters.
-Offline and localhost browser validation is part of the release suite. Public
-portal validation remains explicitly supervised and never uploads, logs in,
-handles challenges, or submits.
+Contributions welcome — start with [CONTRIBUTING.md](CONTRIBUTING.md) and keep
+`npm test` green. Release notes: [CHANGELOG.md](CHANGELOG.md) ·
+[v1.0.0-rc.1 notes](docs/release/V1_RC1_RELEASE_NOTES.md).
 
 ## License
 

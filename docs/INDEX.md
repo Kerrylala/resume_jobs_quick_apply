@@ -8,6 +8,9 @@ language.
 
 Read these to install, start, and use the product safely:
 
+- [user/PRODUCT_TOUR.md](user/PRODUCT_TOUR.md)
+  ([中文](user/PRODUCT_TOUR.zh-CN.md)) — full first-use workflow, daily rhythm,
+  executor modes, and project layout (the detail behind the README).
 - [user/quick_start.md](user/quick_start.md) — install to first working Dashboard.
 - [user/USER_GUIDE.md](user/USER_GUIDE.md) — full user guide
   ([EN](user/USER_GUIDE_EN.md), [中文](user/USER_GUIDE_CN.md), [中文用户指南](user/中文用户指南.md)).
@@ -61,6 +64,12 @@ behavior:
 
 ## Release documentation
 
+- [release/V1_RC1_RELEASE_NOTES.md](release/V1_RC1_RELEASE_NOTES.md) — draft
+  GitHub Release notes for `v1.0.0-rc.1` (honest what-works / limitations).
+- [release/GITHUB_TOPICS.md](release/GITHUB_TOPICS.md) — recommended GitHub
+  topics and About description.
+- [demo/DEMO_SCRIPT.md](demo/DEMO_SCRIPT.md) — demo GIF shot list, timings,
+  and safe-recording setup.
 - [release/RELEASE_CANDIDATE_HANDOFF.md](release/RELEASE_CANDIDATE_HANDOFF.md) — 1.0.0-rc.1 frozen handoff.
 - [release/GITHUB_RELEASE_READINESS_REPORT.md](release/GITHUB_RELEASE_READINESS_REPORT.md) — release-tree readiness.
 - [release/RELEASE_CHECKLIST.md](release/RELEASE_CHECKLIST.md),
