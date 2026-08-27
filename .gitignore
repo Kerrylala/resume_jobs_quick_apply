@@ -68,3 +68,7 @@ docs/goal_modes/
 
 # Internal launch/promotion collateral (not product documentation)
 docs/release/LAUNCH_POSTS.md
+docs/product/
+docs/audits/
+docs/demo/
+docs/release/

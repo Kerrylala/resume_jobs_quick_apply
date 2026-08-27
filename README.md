@@ -183,7 +183,7 @@ Honest notes before you rely on it:
 
 Contributions welcome — start with [CONTRIBUTING.md](CONTRIBUTING.md) and keep
 `npm test` green. Release notes: [CHANGELOG.md](CHANGELOG.md) ·
-[v1.0.0-rc.1 notes](docs/release/V1_RC1_RELEASE_NOTES.md).
+[Releases](https://github.com/Kerrylala/resume_jobs_quick_apply/releases).
 
 ## License
 

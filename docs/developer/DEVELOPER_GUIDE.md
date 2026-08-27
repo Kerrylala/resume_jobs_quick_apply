@@ -209,8 +209,8 @@ and report history. The extension-origin localhost
 handoff returns that session after an exact page match; the extension never
 loads Career Profile or package-bundle files independently. Resume bytes,
 sensitive answers, login/challenge permission and submit permission are absent.
-See [APPLICATION_EXECUTOR_ARCHITECTURE_REPORT.md](../history/audits/APPLICATION_EXECUTOR_ARCHITECTURE_REPORT.md)
-(historical report; see [docs/history/README.md](../history/README.md)).
+See [EXTENSION_ARCHITECTURE.md](../architecture/EXTENSION_ARCHITECTURE.md)
+for the executor boundary in detail.
 
 The Dashboard can instead attach `browser_agent/run.mjs` to the same execution
 session. The private context under `browser_sessions/` is the canonical session

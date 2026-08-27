@@ -8,8 +8,7 @@ area.
 Until that migration happens, the product continues to serve
 `dashboard/public/` exactly as before; this directory contains no served code.
 
-Rules for the migration (see
-[docs/product/QUICK_APPLY_IMPLEMENTATION_PLAN.md](../../docs/product/QUICK_APPLY_IMPLEMENTATION_PLAN.md)):
+Rules for the migration:
 
 - Quick Apply becomes the default UI; the current Dashboard remains available
   as Advanced.

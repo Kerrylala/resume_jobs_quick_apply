@@ -162,7 +162,7 @@ English docs: [README](README.md) · [Contributing](CONTRIBUTING.md) ·
 
 欢迎贡献——从[贡献指南](CONTRIBUTING.zh-CN.md)开始,保持 `npm test` 全绿。
 版本说明:[更新日志](CHANGELOG.zh-CN.md) ·
-[v1.0.0-rc.1 发布说明](docs/release/V1_RC1_RELEASE_NOTES.md)。
+[Releases 页面](https://github.com/Kerrylala/resume_jobs_quick_apply/releases)。
 
 ## 许可
 

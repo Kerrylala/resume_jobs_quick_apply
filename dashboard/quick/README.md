@@ -14,6 +14,6 @@ No code lives here yet; nothing in this directory is served by the product.
   (`dashboard/server.mjs`, `scripts/lib/`, `application_executor/`). No second
   backend, no second state machine, and no second data store will be created.
 
-See [docs/product/QUICK_APPLY_TARGET_PRODUCT.md](../../docs/product/QUICK_APPLY_TARGET_PRODUCT.md)
-and [docs/product/QUICK_APPLY_IMPLEMENTATION_PLAN.md](../../docs/product/QUICK_APPLY_IMPLEMENTATION_PLAN.md)
-for the product definition and implementation plan.
+See the [product tour](../../docs/user/PRODUCT_TOUR.md) and
+[architecture notes](../../docs/architecture/ARCHITECTURE.md) for how this view
+fits the rest of the product.
