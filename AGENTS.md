@@ -17,7 +17,7 @@ After editing:
 1. Run the smallest relevant tests, then `npm test` for product changes.
 2. Keep generated data, reports, profiles, resumes, credentials, and local
    extension bundles out of Git.
-3. Update `docs/DEVELOPMENT_LOG.md` with a concise user-facing result.
+3. Update `CHANGELOG.md` with a concise user-facing result.
 
 Accessing a real job site, logging in, uploading a resume, or submitting an
 application requires explicit user authorization. Never bypass CAPTCHA or MFA,

@@ -72,3 +72,5 @@ docs/product/
 docs/audits/
 docs/demo/
 docs/release/
+CLAUDE.md
+.claude/
